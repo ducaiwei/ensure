@@ -1,0 +1,38 @@
+@import "~normalize.css";
+@import "../_variable.less";
+
+::-webkit-scrollbar {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  display: none;
+  opacity: 0;
+}
+
+html, body {
+  position: relative;
+  display: block;
+  height: 100%;
+  box-sizing: border-box;
+  color: @--color-text-primary;
+  font-size: @--font-size-root;
+  font-weight: @--font-weight-base;
+  letter-spacing: .5px;
+  line-height: 1.5;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+  .setTapColor();
+}
+
+view,
+scroll-view,
+label,
+textarea,
+input,
+picker,
+radio,
+checkbox,
+form {
+  box-sizing: inherit;
+}

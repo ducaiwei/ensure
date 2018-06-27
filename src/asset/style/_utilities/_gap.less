@@ -1,0 +1,132 @@
+.generate-gap-rem(4);
+
+.generate-gap-rem(@n, @i: 0) when (@i =< @n) {
+  .fm-p-@{i} {
+    padding: unit(@i, rem) !important;
+  }
+
+  .fm-px-@{i} {
+    padding-right: unit(@i, rem) !important;
+    padding-left: unit(@i, rem) !important;
+  }
+
+  .fm-py-@{i} {
+    padding-top: unit(@i, rem) !important;
+    padding-bottom: unit(@i, rem) !important;
+  }
+
+  .fm-pt-@{i} {
+    padding-top: unit(@i, rem) !important;
+  }
+
+  .fm-pr-@{i} {
+    padding-right: unit(@i, rem) !important;
+  }
+
+  .fm-pb-@{i} {
+    padding-bottom: unit(@i, rem) !important;
+  }
+
+  .fm-pl-@{i} {
+    padding-left: unit(@i, rem) !important;
+  }
+
+  .fm-m-@{i} {
+    margin: unit(@i, rem) !important;
+  }
+
+  .fm-mx-@{i} {
+    margin-right: unit(@i, rem) !important;
+    margin-left: unit(@i, rem) !important;
+  }
+
+  .fm-my-@{i} {
+    margin-top: unit(@i, rem) !important;
+    margin-bottom: unit(@i, rem) !important;
+  }
+
+  .fm-mt-@{i} {
+    margin-top: unit(@i, rem) !important;
+  }
+
+  .fm-mr-@{i} {
+    margin-right: unit(@i, rem) !important;
+  }
+
+  .fm-mb-@{i} {
+    margin-bottom: unit(@i, rem) !important;
+  }
+
+  .fm-ml-@{i} {
+    margin-left: unit(@i, rem) !important;
+  }
+
+  .generate-gap-rem(@n, (@i + 1)) !important;
+}
+
+
+.generate-gap-px(32);
+
+.generate-gap-px(@n, @i: 1) when (@i =< @n) {
+  .fm-p-@{i}px {
+    padding: unit(@i, px) !important;
+  }
+
+  .fm-px-@{i}px {
+    padding-right: unit(@i, px) !important;
+    padding-left: unit(@i, px) !important;
+  }
+
+  .fm-py-@{i}px {
+    padding-top: unit(@i, px) !important;
+    padding-bottom: unit(@i, px) !important;
+  }
+
+  .fm-pt-@{i}px {
+    padding-top: unit(@i, px) !important;
+  }
+
+  .fm-pr-@{i}px {
+    padding-right: unit(@i, px) !important;
+  }
+
+  .fm-pb-@{i}px {
+    padding-bottom: unit(@i, px) !important;
+  }
+
+  .fm-pl-@{i}px {
+    padding-left: unit(@i, px) !important;
+  }
+
+  .fm-m-@{i}px {
+    margin: unit(@i, px) !important;
+  }
+
+  .fm-mx-@{i}px {
+    margin-right: unit(@i, px) !important;
+    margin-left: unit(@i, px) !important;
+  }
+
+  .fm-my-@{i}px {
+    margin-top: unit(@i, px) !important;
+    margin-bottom: unit(@i, px) !important;
+  }
+
+  .fm-mt-@{i}px {
+    margin-top: unit(@i, px) !important;
+  }
+
+  .fm-mr-@{i}px {
+    margin-right: unit(@i, px) !important;
+  }
+
+  .fm-mb-@{i}px {
+    margin-bottom: unit(@i, px) !important;
+  }
+
+  .fm-ml-@{i}px {
+    margin-left: unit(@i, px) !important;
+  }
+
+  .generate-gap-px(@n, (@i + 1));
+}

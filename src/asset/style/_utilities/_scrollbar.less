@@ -1,0 +1,19 @@
+@import "../_variable.less";
+
+.fm-scrollbar {
+  //定义特殊的scrollbar
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: @--border-color-base;
+    border-radius: .5rem;
+    box-shadow: @--border-color-extra-light 0 0 0 1px inset;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: @--border-color-lighter;
+  }
+}
