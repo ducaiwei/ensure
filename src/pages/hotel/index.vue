@@ -11,15 +11,9 @@
 </template>
 
 <script>
-import OrderCard from './OrderCard'
-import OrderMall from './OrderMall'
-import OrderTrade from './OrderTrade'
 import FmNavbar from '@/components/FmNavbar'
 export default {
   components: {
-    OrderCard,
-    OrderMall,
-    OrderTrade,
     FmNavbar
   },
   data () {
