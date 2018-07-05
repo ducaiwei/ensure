@@ -15,7 +15,7 @@
     <!--购物车弹层-->
     <view class="modal">
       <view :animation="animationMask" class="modal-mask " :class="maskVisual" @tap="cascadeDismiss"></view>
-      <view :animation="animationData" class="modal-content" :style="{height: cartHeight + 'px', bottom: cartHeight + 'px'}">
+      <view :animation="animationData" class="modal-content" :style="{height: cartHeight + 'px', bottom: showBottomHeight + 'px'}">
           <view class="modal-header">
               <text class="modal-title">购物车</text>
               <image :src="CloseImg" class="modal-close" bindtap="cascadeDismiss" />
@@ -26,11 +26,11 @@
               <view class="fee">{{item.price * item.count}}</view>
               <view class="stepper">
               <!-- 减号 -->
-              <!-- <image src="/images/subtract.png" class="symbol" bindtap="subtract" v-if="cartData[item.food.objectId]" :data-food-id="item.food.objectId" /> -->
+              <image src="/images/subtract.png" class="symbol" bindtap="subtract"/>
               <!-- 数量 -->
-              <!-- <view class="value">{{cartData[item.food.objectId]}}</view> -->
+              <view class="value">1</view>
               <!-- 加号 -->
-              <!-- <image src="/images/add.png" class="symbol" bindtap="add" :data-food-id="item.food.objectId" /> -->
+              <image src="/images/add.png" class="symbol" bindtap="add"/>
             </view>
             </view>
           </scroll-view>
@@ -68,7 +68,8 @@ export default {
       food_row_height: 49, // 
       cart_offset: 90, // 行高
       scrollHeight: 0,
-      CloseImg: CloseImg
+      CloseImg: CloseImg,
+      showBottomHeight: 0
     }
   },
   computed: {
@@ -97,8 +98,9 @@ export default {
       // scrollHeight为商品列表本身的高度
       var scrollHeight = (this.cart.length <= this.max_row_height ? this.cart.length : this.max_row_height) * this.food_row_height
       // cartHeight为整个购物车的高度，也就是包含了标题栏与底部栏的高度
-      var cartHeight = 50
-      console.log('cartHeight:'+cartHeight)
+      // var cartHeight = 50
+      var cartHeight = scrollHeight + this.cart_offset;
+      this.showBottomHeight = 50
       animation.translateY(- cartHeight).step()
       this.animationData =  this.animation.export()
       this.maskVisual = 'show'
@@ -276,6 +278,7 @@ export default {
 }
 
 .modal-body .item {
+  height: 49px;
 	align-items: center;
 	border-bottom: 1px solid #eee;
 }

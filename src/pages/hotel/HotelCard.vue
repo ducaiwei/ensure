@@ -29,7 +29,7 @@
 import FmImage from '@/components/FmImage'
 import FmIcon from '@/components/FmIcon'
 export default {
-  name: 'OrderCard',
+  name: 'HotelCard',
   components: {
     FmImage,
     FmIcon
