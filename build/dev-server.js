@@ -86,7 +86,7 @@ module.exports = new Promise((resolve, reject) => {
   portfinder.getPortPromise()
   .then(newPort => {
       if (port !== newPort) {
-        console.log(`${port}端口被占用，开启新端口${newPort}`)
+        console.log('${port}端口被占用，开启新端口${newPort}')
       }
       var server = app.listen(newPort, 'localhost')
       // for 小程序的文件保存机制

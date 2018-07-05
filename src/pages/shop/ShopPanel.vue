@@ -40,16 +40,16 @@ export default {
       if (distance < 0) {
         return '未知'
       } else if (distance < 1000) {
-        return `${distance} m`
+        return '${distance} m'
       } else {
-        return `${distance / 1000} km`
+        return '${distance / 1000} km'
       }
     }
   },
   methods: {
     goOrder (branchId) {
       this.$wxp.reLaunch({
-        url: `/pages/order/main?branch=${branchId}`
+        url: '/pages/order/main?branch=${branchId}'
       })
     }
   }

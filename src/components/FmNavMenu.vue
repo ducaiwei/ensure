@@ -100,31 +100,6 @@ export default {
     background-color: @--fill-base;
     color: @--color-text-primary;
     font-weight: @--font-weight-blod;
-
-    // &::before {
-    //   position: absolute;
-    //   top: -20px;
-    //   right: 0;
-    //   width: 20px;
-    //   height: 20px;
-    //   background-color: transparent;
-    //   content: "";
-    //   border-bottom-right-radius: 50%;
-    //   box-shadow: 10px 10px 0 10px #ffffff;
-    // }
-
-    // &::after {
-    //   position: absolute;
-    //   right: 0;
-    //   bottom: -20px;
-    //   width: 20px;
-    //   height: 20px;
-    //   background-color: transparent;
-    //   content: "";
-    //   border-top-right-radius: 50%;
-    //   box-shadow: 10px -10px 0 10px #ffffff;
-    // }
-
     &::after {
       opacity: 1;
     }

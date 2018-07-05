@@ -4,21 +4,24 @@
     <fm-navbar v-model="navbarChecked" :options="options" size="small"></fm-navbar>
     <swiper @change="handleChange" :current-item-id="navbarChecked" skip-hidden-item-layout duration="300" class="fm-order-swiper">
       <swiper-item item-id="展厅">
-        <order-mall></order-mall>
+        <!-- <order-mall></order-mall> -->
       </swiper-item>
+      <swiper-item item-id="我的订单">
++        <order-trade></order-trade>
++      </swiper-item>
     </swiper>
   </view>
 </template>
 
 <script>
 import OrderCard from './OrderCard'
-import OrderMall from './OrderMall'
+// import OrderMall from './OrderMall'
 import OrderTrade from './OrderTrade'
 import FmNavbar from '@/components/FmNavbar'
 export default {
   components: {
     OrderCard,
-    OrderMall,
+    // OrderMall,
     OrderTrade,
     FmNavbar
   },

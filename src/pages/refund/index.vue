@@ -89,7 +89,7 @@ export default {
         confirmText: '确定'
       }).then(res => {
         this.$wxp.redirectTo({
-          url: `/pages/trade/main?tradeId=${refundForm.tradeId}`
+          url: '/pages/trade/main?tradeId=${refundForm.tradeId}'
         })
       })
     }

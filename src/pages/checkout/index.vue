@@ -71,8 +71,8 @@ export default {
       let tmp = []
       while (i > 0) {
         tmp.push({
-          skuId: `skuId${i}`,
-          goodName: `商品名称${i}`,
+          skuId: 'skuId${i}',
+          goodName: '商品名称${i}',
           goodImage: this.$random.image(),
           skuLabel: '大杯, 去冰',
           goodNumber: this.$random.number(1, 5),
@@ -101,7 +101,7 @@ export default {
     },
     goTrade () {
       this.$wxp.redirectTo({
-        url: `/pages/trade/main?tradeId=td01`
+        url: '/pages/trade/main?tradeId=td01'
       })
     }
   },

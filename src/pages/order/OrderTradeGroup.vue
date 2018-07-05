@@ -44,7 +44,7 @@ export default {
   methods: {
     handleTrade (tradeId) {
       this.$wxp.navigateTo({
-        url: `/pages/trade/main?tradeId=${tradeId}`
+        url: '/pages/trade/main?tradeId=${tradeId}'
       })
     }
   }

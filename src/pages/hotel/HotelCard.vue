@@ -21,6 +21,7 @@
         <view class="fm-order-panel__bd__desc">门店地址: {{ shop.address }}</view>
       </view>
     </view>
+
   </view>
 </template>
 
@@ -56,10 +57,10 @@ export default {
     getShop () {
       const shop = {
         businessId: 'brandId',
-        businessName: '品牌名称',
+        businessName: '上海浦东酒店',
         branchId: 'shopId',
-        branchName: '门店名称',
-        address: '门店地址门店地址门店地址门店地址门店地址门店地址门店地址门店地址门店地址门店地址门店地址',
+        branchName: '',
+        address: '上海市浦东区',
         avatar: this.$random.image(),
         hour: '10:00 - 22:00'
       }

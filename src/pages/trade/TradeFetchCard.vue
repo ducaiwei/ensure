@@ -51,7 +51,7 @@ export default {
     goRefund () {
       const tradeId = this._tradeId
       this.$wxp.navigateTo({
-        url: `/pages/refund/main?tradeId=${tradeId}`
+        url: '/pages/refund/main?tradeId=${tradeId}'
       })
     }
   }

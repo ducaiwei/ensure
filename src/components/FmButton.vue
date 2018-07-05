@@ -23,6 +23,7 @@
     @getphonenumber="getphonenumber"
     @error="error"
     @click="handleClick"
+    @tap="handleTap"
     @longpress="handleLongPress"
     class="fm-btn"
     :class="[
@@ -176,7 +177,10 @@ export default {
     },
     handleLongPress (evt) {
       this.$emit('longpress', evt)
-    }
+    },
+    handleTap (evt) {
+      this.$emit('tap', evt)
+    },
   }
 }
 </script>

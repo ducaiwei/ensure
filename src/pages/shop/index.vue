@@ -51,9 +51,9 @@ export default {
       let tmp = []
       while (i > 0) {
         tmp.push({
-          branchId: `bId${i}`,
-          branchName: `门店名称${i}`,
-          branchAddress: `门店地址门店地址门店地址门店地址门店地址门店地址门店地址${i}`,
+          branchId: 'bId${i}',
+          branchName: '门店名称${i}',
+          branchAddress: '门店地址门店地址门店地址门店地址门店地址门店地址门店地址${i}',
           distance: 1001 - i
         })
         i--
