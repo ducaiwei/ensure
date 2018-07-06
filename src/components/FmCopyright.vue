@@ -1,5 +1,5 @@
 <template>
-  <view class="fm-copyright" :class="className" :style="elementStyle">搭搭宝应用提供技术支持</view>
+  <view class="fm-copyright" :class="className" :style="elementStyle"></view>
 </template>
 
 <script>

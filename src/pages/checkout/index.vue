@@ -1,20 +1,63 @@
 <template>
   <view class="fm-checkout">
-    <checkout-fetch-card :branch="trade.fetch" :distance="distance"></checkout-fetch-card>
-
-    <view class="fm-checkout-card">
-      <view class="fm-checkout-card__hd">{{ trade.fetch.branchName }}</view>
-      <view class="fm-checkout-card__bd">
-        <checkout-good-group :good="trade.good"></checkout-good-group>
-      </view>
-      <view class="fm-checkout-card-ft">
-        <view>共 {{ trade.info.tradeNumber }} 件商品</view>
-        <fm-price :price="trade.info.tradeAmount" label="小计:" label-class="label" currency color="inherit" font-size="16"></fm-price>
-      </view>
+    <view class="check-img-box">
+      <image src=""/>
     </view>
-
-    <fm-copyright></fm-copyright>
-
+    <view class="form-box">
+      <form bindsubmit="formSubmit" bindreset="formReset">
+        <view class="item-card">
+          <!-- <view class="check-list-item">
+            <text class="text-label">地址：</text>
+            <text>上海浦东区宴会厅一楼一厅</text>
+          </view>
+          <view class="check-list-item">
+            <text  class="text-label">面积：</text>
+            <text>142平</text>
+          </view> -->
+          <view class="item-card-title">
+            <text>上海市浦东酒店</text>
+          </view>
+          <view class="check-list-item">
+            <image src="http://wx1.sinaimg.cn/mw600/46401622gy1fqnq7rsaa9j20ri0rital.jpg" class="hall-img"/>
+            <text class="block-text hall-name">宴会厅一楼一厅</text>
+            <text class="block-text price">282</text>
+            <view class="item-step">
+              <text class="oper-num">-</text>
+              <input type="text" value="1">
+              <text class="oper-num">+</text>
+            </view>
+          </view>
+          <view class="check-list-item">
+            <image src="http://wx1.sinaimg.cn/mw600/46401622gy1fqnq7rsaa9j20ri0rital.jpg" class="hall-img"/>
+            <text class="block-text hall-name">宴会厅一楼二厅</text>
+            <text class="block-text price">282</text>
+            <view class="item-step">
+              <text class="oper-num">-</text>
+              <input type="text" value="1">
+              <text class="oper-num">+</text>
+            </view>
+          </view>
+        </view>
+        <view class="item-card protect-content-box">
+          <view class="item-card-title">
+            <text>保障内容</text>
+          </view>
+          <view class="protect-content-item">
+            <text class="block-text content-name">意外险</text>
+            <text class="block-text">最高赔付30万</text>
+          </view>
+          <view class="protect-content-item">
+            <text class="block-text content-name">搭建险</text>
+            <text class="block-text">最高赔付60万</text>
+          </view>
+        </view>
+        <view class="item-card">
+          <view class="for-item">
+          </view>
+        </view>
+        
+      </form>
+    </view>
     <view class="fm-checkout-navbar-fixed">
       <fm-button @click="handlePay" size="xl" type="primary" text="微信支付"></fm-button>
     </view>
@@ -25,15 +68,13 @@
 import FmPrice from '@/components/FmPrice'
 import FmCopyright from '@/components/FmCopyright'
 import FmButton from '@/components/FmButton'
-import CheckoutFetchCard from './CheckoutFetchCard'
-import CheckoutGoodGroup from './CheckoutGoodGroup'
+import FmImage from '@/components/FmImage'
 export default {
   components: {
     FmPrice,
     FmCopyright,
     FmButton,
-    CheckoutFetchCard,
-    CheckoutGoodGroup
+    FmImage
   },
   data () {
     return {
@@ -49,64 +90,9 @@ export default {
     }
   },
   methods: {
-    getMock () {
-      this.getFetch()
-      this.getInfo()
-      this.getGood(5)
-    },
-    getFetch () {
-      const fetch = {
-        branchName: '门店名称',
-        branchAddress: '门店地址门店地址门店地址门店地址门店地址门店地址',
-        location: {
-          latitude: 31.267110,
-          longitude: 121.377300
-        }
-      }
-      const distance = 725
-      this.trade.fetch = fetch
-      this.distance = distance
-    },
-    getGood (i) {
-      let tmp = []
-      while (i > 0) {
-        tmp.push({
-          skuId: 'skuId${i}',
-          goodName: '商品名称${i}',
-          goodImage: this.$random.image(),
-          skuLabel: '大杯, 去冰',
-          goodNumber: this.$random.number(1, 5),
-          goodAmount: this.$random.number(800, 4000)
-        })
-        i--
-      }
-      this.trade.good = tmp
-    },
-    getInfo () {
-      const info = {
-        tradeNumber: 5,
-        tradeAmount: 5200
-      }
-      this.trade.info = info
-    },
-    handlePay () {
-      this.$wxp.showModal({
-        title: '操作演示',
-        content: '拉起支付咯😝'
-      }).then(res => {
-        if (res.confirm) {
-          this.goTrade()
-        }
-      })
-    },
-    goTrade () {
-      this.$wxp.redirectTo({
-        url: '/pages/trade/main?tradeId=td01'
-      })
-    }
   },
   mounted () {
-    this.getMock()
+    // this.getMock()
   }
 }
 </script>
@@ -116,60 +102,92 @@ export default {
 
 .fm-checkout {
   min-height: 100%;
-  overflow: hidden;
-  background-color: @--background-color-base;
   padding-bottom: 56px;
-}
-
-.fm-checkout-card {
-  position: relative;
-  display: block;
-  margin: 8px;
-  padding: 0 16px;
-  background-color: @--fill-base;
-  border-radius: @--border-radius-small;
-  border: @--border-width-base @--border-style-base @--border-color-extra-light;
+  background-color: #f4f4f4;
   overflow: hidden;
 }
-
-.fm-checkout-card__hd {
-  position: relative;
+.check-img-box {
   display: block;
-  line-height: 48px;
-  height: 48px;
-  font-weight: @--font-weight-blod;
-  font-size: @--font-size-base;
-
-  &::after {
-    .setBottomLine(@--border-color-extra-light);
-  }
+  width: 100%;
+  height: 300rpx;
+  background: blue;
 }
-
-.fm-checkout-card__bd {
-  position: relative;
+.item-card {
   display: block;
+  width: 95%;
+  margin: auto;
+  margin-top: 20rpx;
+  padding: 0 4rpx;
+  padding-bottom: 20rpx;
+  background-color: #fff;
 }
-
-.fm-checkout-card-ft {
-  position: relative;
+.item-card-title {
+  padding-left: 20rpx;
+  padding-top: 20rpx;
+}
+.check-list-item {
   display: flex;
-  height: 48px;
-  align-items: center;
-  justify-content: space-between;
-  font-size: @--font-size-base;
-
-  &::before {
-    .setTopLine(@--border-color-extra-light)
+  padding: 10rpx 20rpx;
+  margin-top: 20rpx;
+  background-color: #f7f7f7;
+  .hall-img {
+    display: block;
+    width: 100rpx;
+    height: 100rpx;
+  }
+  .block-text {
+    display: block;
+    text-align: center;
+    line-height: 100rpx;
+    font-size: 24rpx;
+  }
+  .text-label {
+    padding-left: 30rpx;
+  }
+  .hall-name {
+    width: 50%;
+  }
+  .price {
+    width: 20%;
   }
 }
-
+.item-step {
+  display: flex;
+  width: 160rpx;
+  text-align: right;
+  input {
+    display: block;
+    width: 80rpx;
+    margin: auto;
+    height: 100rpx;
+    text-align: center;
+  }
+  .oper-num {
+    font-size: 60rpx;
+  }
+}
+.protect-content-box {
+  display: block;
+}
+.protect-content-item {
+  display: flex;
+  height: 60rpx;
+  line-height: 60rpx;
+  padding: 0rpx 20rpx;
+  text {
+    display: block;
+    flex: 1;
+    text-align: center;
+    font-size: 24rpx;
+  }
+  .content-name {
+    text-align: left;
+  }
+}
 .fm-checkout-navbar-fixed {
   position: fixed;
-  right: 0;
-  bottom: 0;
+  width: 100%;
   left: 0;
-  display: block;
-  z-index: @zindex-navbar-fixed;
-  box-shadow: @--box-shadow-base;
+  bottom: 0;
 }
 </style>

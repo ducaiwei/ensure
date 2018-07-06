@@ -15,10 +15,10 @@
     <!--购物车弹层-->
     <view class="modal">
       <view :animation="animationMask" class="modal-mask " :class="maskVisual" @tap="cascadeDismiss"></view>
-      <view :animation="animationData" class="modal-content" :style="{height: cartHeight + 'px', bottom: showBottomHeight + 'px'}">
+      <view :animation="animationData" class="modal-content" :class="maskVisual" :style="{height: cartHeight + 'px', bottom: showBottomHeight + 'px'}">
           <view class="modal-header">
               <text class="modal-title">购物车</text>
-              <image :src="CloseImg" class="modal-close" bindtap="cascadeDismiss" />
+              <image :src="CloseImg" class="modal-close" @tap="cascadeDismiss" />
           </view>
           <scroll-view class="modal-body" scroll-y="true" :style="{height: scrollHeight + 'px'}">
             <view class="item" v-for="(item, index) in cart" :key="index">
@@ -113,16 +113,15 @@ export default {
       });
       this.animationMask = animationMask
       animationMask.opacity(0.8).step()
-      this.animationMask = this.animationMask.export()
+      // this.animationMask = this.animationMask.export()
     },
     cascadeDismiss () {
       // 购物车关闭动画
       this.animation.translateY(this.cartHeight).step()
       this.animationData = this.animation.export()
-      console.log(this.animationMask)
       // 遮罩渐变动画
       this.animationMask.opacity(0).step();
-      this.animationMask = this.animationMask.export()
+      // this.animationMaskData = this.animationMask.export()
       // 隐藏遮罩层
       this.maskVisual = 'hidden'
     }
