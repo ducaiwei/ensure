@@ -8,9 +8,13 @@ import wxbarcode from 'wxbarcode'
 import * as money from './money'
 import * as random from './random'
 import * as conSole from './console'
+import * as Date from './date'
+
+console.log(Date.dateFormat)
+
+Date.dateFormat()
 
 const plugin = []
-
 const install = Vue => {
   if (install.installed) return
   plugin.map(element => {
