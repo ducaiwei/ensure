@@ -49,7 +49,7 @@ export default {
   methods: {
     goOrder (branchId) {
       this.$wxp.reLaunch({
-        url: '/pages/order/main?branch=${branchId}'
+        url: '/pages/hotel/main?branch=${branchId}'
       })
     }
   }

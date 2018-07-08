@@ -2,11 +2,11 @@
   <view class="fm-trade-detail">
 
     <!-- 取餐码，start -->
-    <trade-fetch-card v-model="trade.fetch"></trade-fetch-card>
+    <!-- <trade-fetch-card v-model="trade.fetch"></trade-fetch-card> -->
     <!-- 取餐码，end -->
 
     <!-- order，start -->
-    <view class="fm-trade-detail-card">
+    <!-- <view class="fm-trade-detail-card">
       <view class="fm-trade-detail-card__hd">{{ trade.info.branchName }}</view>
       <view class="fm-trade-detail-card__bd">
         <trade-detail-order-group :order="trade.order"></trade-detail-order-group>
@@ -15,36 +15,41 @@
         <view>共 {{ trade.info.tradeNumber }} 件商品</view>
         <fm-price :price="trade.info.tradeAmount" label="实付:" label-class="label" currency color="inherit" font-size="16"></fm-price>
       </view>
-    </view>
+    </view> -->
     <!-- order，end -->
 
     <view class="fm-trade-detail-card">
       <view class="fm-trade-detail-card__hd">订单信息</view>
       <view class="fm-trade-detail-card__bd">
-        <trade-detail-cell label="订单类型" :value="trade.info.tradeType"></trade-detail-cell>
-        <trade-detail-cell label="订单号" :value="trade.info.tradeId" mode="number"></trade-detail-cell>
-        <trade-detail-cell label="订单状态" :value="trade.info.tradeStatus"></trade-detail-cell>
-        <trade-detail-cell label="下单时间" :value="trade.info.createdTimestamp" mode="timestamp"></trade-detail-cell>
+        <trade-detail-cell label="订单编号" :value="trade.info.tradeType"></trade-detail-cell>
+        <trade-detail-cell label="订单状态" :value="trade.info.tradeId" mode="number"></trade-detail-cell>
+        <trade-detail-cell label="提交时间" :value="trade.info.createdTimestamp" mode="timestamp"></trade-detail-cell>
       </view>
     </view>
 
     <view class="fm-trade-detail-card">
-      <view class="fm-trade-detail-card__hd">付款信息</view>
+      <view class="fm-trade-detail-card__hd">保单详情</view>
       <view class="fm-trade-detail-card__bd">
-        <trade-detail-cell label="付款方式" :value="trade.pay.payType === 'wechatpay' ? '微信支付' : '其他'"></trade-detail-cell>
-        <trade-detail-cell label="付款单号" :value="trade.pay.payId" mode="number"></trade-detail-cell>
-        <trade-detail-cell label="付款时间" :value="trade.pay.payTimestamp" mode="timestamp"></trade-detail-cell>
+        <trade-detail-cell label="保单编号" :value="trade.pay.payType === 'wechatpay' ? '微信支付' : '其他'"></trade-detail-cell>
+        <trade-detail-cell label="展厅名称" :value="trade.pay.payId" mode="number"></trade-detail-cell>
+        <trade-detail-cell label="面积" :value="trade.pay.payId" mode="number"></trade-detail-cell>
+        <trade-detail-cell label="保单时间" :value="trade.pay.payId" mode="number"></trade-detail-cell>
+        <trade-detail-cell label="保单单价" :value="trade.pay.payId" mode="number"></trade-detail-cell>
+        <trade-detail-cell label="附加险" :value="trade.pay.payId" mode="number"></trade-detail-cell>
+        <trade-detail-cell label="保单分数" :value="trade.pay.payId" mode="number"></trade-detail-cell>
+        <trade-detail-cell label="保单总价" :value="trade.pay.payId" mode="number"></trade-detail-cell>
+        <trade-detail-cell label="生成时间" :value="trade.pay.payId" mode="number"></trade-detail-cell>
       </view>
     </view>
 
-    <view class="fm-trade-detail-card">
+    <!-- <view class="fm-trade-detail-card">
       <view class="fm-trade-detail-card__hd">取餐信息</view>
       <view class="fm-trade-detail-card__bd">
         <trade-detail-cell label="取餐门店" :value="trade.fetch.fetchBranchName"></trade-detail-cell>
         <trade-detail-cell label="取餐状态" :value="trade.fetch.fetchStatus"></trade-detail-cell>
         <trade-detail-cell label="取餐时间" :value="trade.fetch.fetchTimestamp" mode="timestamp"></trade-detail-cell>
       </view>
-    </view>
+    </view> -->
     <fm-copyright></fm-copyright>
   </view>
 </template>
@@ -143,7 +148,9 @@ export default {
 .fm-trade-detail-card {
   position: relative;
   display: block;
-  margin: 8px;
+  width: 95%;
+  margin: auto;
+  margin-top: 20rpx;
   padding: 0 16px;
   background-color: @--fill-base;
   border-radius: @--border-radius-small;

@@ -1,5 +1,11 @@
 <template>
-  <view class="fm-copyright" :class="className" :style="elementStyle"></view>
+  <view class="fm-copyright" :class="className" :style="elementStyle">
+    <view>温馨提示</view>
+    <view>如有任何疑问，请拨打客服电话</view>
+    <view @tap="takePhone">
+      400-810-0088
+    </view>
+  </view>
 </template>
 
 <script>
@@ -8,6 +14,13 @@ export default {
   props: {
     className: String,
     elementStyle: String
+  },
+  methods: {
+    takePhone () {
+      wx.makePhoneCall({
+        phoneNumber: '4008100088' //仅为示例，并非真实的电话号码
+      })
+    }
   }
 }
 </script>

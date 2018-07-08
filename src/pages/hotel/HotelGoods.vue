@@ -9,8 +9,11 @@
         <view class="fm-order-good__bd__desc">{{ item.desc }}</view>
         <view class="fm-order-good__bd__action">
           <fm-price :price="item.price" :font-size="16" multiple currency></fm-price>
-          <label class="quantity">
+          <label class="quantity" @tap="addQuantity(item, 'plus')" v-if="!item.selected">
             <fm-icon icon="icon-plus-circle" color="#09bb07"></fm-icon>
+          </label>
+          <label class="quantity" @tap="addQuantity(item, 'minus')" v-else>
+            <fm-icon icon="icon-minus-circle" color="#09bb07"></fm-icon>
           </label>
         </view>
       </view>
@@ -21,18 +24,24 @@
 <script>
 import FmImage from '@/components/FmImage'
 import FmIcon from '@/components/FmIcon'
-import FmPrice from '@/components/FmPrice'
-import FmButton from '@/components/FmButton'
 export default {
   name: 'OrderGoods',
   components: {
     FmImage,
     FmIcon,
-    FmPrice,
-    FmButton
   },
   props: {
     goods: Object
+  },
+  methods: {
+    addQuantity (item, type) {
+      if (type === 'plus') {
+        item.selected = true
+      } else {
+        item.selected = false
+      }
+      this.$emit('addQuantity', item, type)
+    }
   }
 }
 </script>

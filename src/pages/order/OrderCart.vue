@@ -7,30 +7,28 @@
           <label class="content" v-if="cart.length > 0">{{ cart.length }}</label>
         </view>
         <view class="fm-order-cart__nav__main">
-          <fm-price v-model="cart.amount" font-size="24" color="#ffffff" currency></fm-price>
+          <fm-price v-model="totalPrice" font-size="24" color="#ffffff" currency></fm-price>
         </view>
         <fm-button @tap="goCheckout" type="primary" text="去结算" size="l" noShadow inline class-name="fm-order-cart__nav__buy"></fm-button>
       </view>
     </view>
     <!--购物车弹层-->
-    <view class="modal">
-      <view :animation="animationMask" class="modal-mask " :class="maskVisual" @tap="cascadeDismiss"></view>
-      <view :animation="animationData" class="modal-content" :class="maskVisual" :style="{height: cartHeight + 'px', bottom: showBottomHeight + 'px'}">
+    <view class="modal" v-show="showModal" v-if="cart.length > 0">
+      <view :animation="animationMask" class="modal-mask" @tap="cascadeDismiss"></view>
+      <view :animation="animationData" class="modal-content">
           <view class="modal-header">
               <text class="modal-title">购物车</text>
               <image :src="CloseImg" class="modal-close" @tap="cascadeDismiss" />
           </view>
-          <scroll-view class="modal-body" scroll-y="true" :style="{height: scrollHeight + 'px'}">
+          <scroll-view class="modal-body" scroll-y="true">
             <view class="item" v-for="(item, index) in cart" :key="index">
-              <view class="title">{{item.name}}</view>
-              <view class="fee">{{item.price * item.count}}</view>
+              <view class="title">{{item.title}}</view>
+              <view class="fee">{{item.price}}</view>
               <view class="stepper">
-              <!-- 减号 -->
-              <image src="/images/subtract.png" class="symbol" bindtap="subtract"/>
-              <!-- 数量 -->
-              <view class="value">1</view>
-              <!-- 加号 -->
-              <image src="/images/add.png" class="symbol" bindtap="add"/>
+                <label class="quantity" @tap="addQuantity(item, 'minus')">
+                  <fm-icon icon="icon-minus-circle" color="#09bb07"></fm-icon>
+                </label>
+                <view class="value">1</view>
             </view>
             </view>
           </scroll-view>
@@ -41,35 +39,29 @@
 
 <script>
 import FmButton from '@/components/FmButton'
-import FmPrice from '@/components/FmPrice'
 import CloseImg from '../../asset/images/close.png'
+import FmIcon from '@/components/FmIcon'
 export default {
   name: 'OrderCart',
   components: {
     FmButton,
-    FmPrice
+    FmIcon
+  },
+  props: {
+    cart: {
+      type: Array,
+      default: []
+    }
   },
   data () {
     return {
-      cart: [{
-        name: 'cccccc',
-        count: 1,
-        price: 1000
-      },
-      {
-        name: 'dddd',
-        count: 2,
-        price: 500
-      }],
-      animationMask: null,
-      cartHeight: 0,
-      maskVisual: 'hidden',
-      max_row_height: 5, // 最大行数
-      food_row_height: 49, // 
-      cart_offset: 90, // 行高
-      scrollHeight: 0,
-      CloseImg: CloseImg,
-      showBottomHeight: 0
+      showModal: false,
+      totalPrice: 0
+    }
+  },
+  watch: {
+    cart (nv, ov) {
+      this.compiteTotalPrice()
     }
   },
   computed: {
@@ -82,48 +74,31 @@ export default {
     },
     cascadeToggle () {
       //切换购物车开与关
-      if (this.maskVisual == 'show') {
+      if (this.showModal) {
         this.cascadeDismiss()
       } else {
         this.cascadePopup()
       }
     },
     cascadePopup () {
-      // 购物车打开动画
-      var animation = wx.createAnimation({
-        duration: 300,
-        timingFunction: 'ease-in-out',
-      });
-      this.animation = animation
-      // scrollHeight为商品列表本身的高度
-      var scrollHeight = (this.cart.length <= this.max_row_height ? this.cart.length : this.max_row_height) * this.food_row_height
-      // cartHeight为整个购物车的高度，也就是包含了标题栏与底部栏的高度
-      // var cartHeight = 50
-      var cartHeight = scrollHeight + this.cart_offset;
-      this.showBottomHeight = 50
-      animation.translateY(- cartHeight).step()
-      this.animationData =  this.animation.export()
-      this.maskVisual = 'show'
-      this.scrollHeight = scrollHeight
-      this.cartHeight = cartHeight
-      // 遮罩渐变动画
-      var animationMask = wx.createAnimation({
-        duration: 150,
-        timingFunction: 'linear',
-      });
-      this.animationMask = animationMask
-      animationMask.opacity(0.8).step()
-      // this.animationMask = this.animationMask.export()
+      this.showModal = true
     },
     cascadeDismiss () {
-      // 购物车关闭动画
-      this.animation.translateY(this.cartHeight).step()
-      this.animationData = this.animation.export()
-      // 遮罩渐变动画
-      this.animationMask.opacity(0).step();
-      // this.animationMaskData = this.animationMask.export()
-      // 隐藏遮罩层
-      this.maskVisual = 'hidden'
+      this.showModal = false
+    },
+    compiteTotalPrice () {
+      if (this.cart.length > 0) {
+        this.totalPrice = 0
+        this.cart.forEach((item, index) => {
+          this.totalPrice = this.totalPrice + item.price
+        })
+      } else {
+        this.totalPrice = 0
+      }
+    },
+    addQuantity (item, type) {
+      item.selected = false
+      this.$emit('addQuantity', item, type)
     }
   }
 }
@@ -223,15 +198,11 @@ export default {
 }
 .modal-content {
 	position: fixed;
-	bottom: -100%;
 	left: 0;
 	width: 100%;
-	background: #fff;
+  bottom: 50px;
+  background: #fff;
 	z-index: 99;
-}
-/**弹层购物车**/
-.hidden {
-  display: none;
 }
 /*遮罩层*/
 .modal-mask {
@@ -241,7 +212,7 @@ export default {
     width: 100%;
     height: 100%;
     background: #000;
-    opacity: 0;
+    opacity: .5;
 }
 
 /*弹窗头部*/
@@ -272,14 +243,30 @@ export default {
 /*内容区域*/
 .modal-body {
 	font-size: 14px;
-	/*height: 145px;*/
-	max-height: 295px;
+	max-height: 145px;
 }
 
 .modal-body .item {
+  position: relative;
+  display: flex;
   height: 49px;
-	align-items: center;
-	border-bottom: 1px solid #eee;
+  align-items: center;
+  &:after {
+    .setBottomLine(@--border-color-extra-light);
+  }
+  .title {
+    padding-left: 40rpx;
+  }
+  .stepper {
+    display: flex;
+  }
+  .title, .fee, .stepper {
+    flex: 1;
+  }
+  .quantity {
+    display: inline-flex;
+    align-items: center;
+  }
 }
 
 /*小计*/

@@ -1,8 +1,8 @@
 <template>
   <view class="fm-checkout">
-    <view class="check-img-box">
+    <!-- <view class="check-img-box">
       <image src=""/>
-    </view>
+    </view> -->
     <view class="form-box">
       <form bindsubmit="formSubmit" bindreset="formReset">
         <view class="item-card">
@@ -11,23 +11,27 @@
           </view>
           <view class="check-list-item">
             <image src="http://wx1.sinaimg.cn/mw600/46401622gy1fqnq7rsaa9j20ri0rital.jpg" class="hall-img"/>
-            <text class="block-text hall-name">宴会厅一楼一厅</text>
-            <text class="block-text price">282</text>
-            <view class="item-step">
-              <text class="oper-num">-</text>
-              <input type="text" value="1">
-              <text class="oper-num">+</text>
+            <view class="hall-name">
+              <text>
+                宴会厅一楼一厅
+              </text>
+              <text>
+                (282平)
+              </text>
             </view>
+            <text class="block-text price">322￥</text>
           </view>
           <view class="check-list-item">
             <image src="http://wx1.sinaimg.cn/mw600/46401622gy1fqnq7rsaa9j20ri0rital.jpg" class="hall-img"/>
-            <text class="block-text hall-name">宴会厅一楼二厅</text>
-            <text class="block-text price">282</text>
-            <view class="item-step">
-              <text class="oper-num">-</text>
-              <input type="text" value="1">
-              <text class="oper-num">+</text>
+            <view class="hall-name">
+              <text>
+                宴会厅一楼一厅
+              </text>
+              <text>
+                (282平)
+              </text>
             </view>
+            <text class="block-text price">322￥</text>
           </view>
         </view>
         <view class="item-card protect-content-box">
@@ -43,7 +47,7 @@
             <text class="block-text">最高赔付60万</text>
           </view>
         </view>
-        <view class="item-card">
+        <view class="item-card form-card">
           <view class="item-card-title">
             <text>投保信息</text>
           </view>
@@ -63,29 +67,52 @@
               </view>
             </picker>
           </view>
-          <view class="form-item">
-            投保人姓名: <input type="text"/>
+          <view class="form-item" v-for="(inputItems,index) in  formInputs" :key="index">
+            {{inputItems.name}}:
+            <input type="text" class="form-input"/>
           </view>
+            <view class="form-item">
+            购买分数:
+            <input v-model="quantity" class="quantity-input"/>
+            <label class="quantity" @tap="addQuantity">
+              <fm-icon icon="icon-plus-circle" color="#09bb07"></fm-icon>
+            </label>
+          </view>
+        </view>
+        <view class="item-card">
+          <view class="item-card-title">
+            <checkbox-group @change="changeCheckAppend">
+              <label class="checkbox">
+                <checkbox class="check-box"/>是否购买附加险
+              </label>
+            </checkbox-group>
+          </view>
+          <checkbox-group @change="itemCheckChange" v-show="isChecked">
+            <view class="append-item" v-for="(item, index1) in appendEnsures" :key="index1">
+              <checkbox class="check-box" value="item.name"/>
+              <text class="name-text">{{item.name}}</text>
+              <text class="compens-text">最高赔偿 {{item.mostCompens}}￥</text>
+              <text class="compens-text">免赔偿额 {{item.avoidCompens}}￥</text>
+            </view>
+          </checkbox-group>
         </view>
       </form>
     </view>
     <view class="fm-checkout-navbar-fixed">
-      <fm-button @click="handlePay" size="xl" type="primary" text="微信支付"></fm-button>
+      <text class="total-price">&nbsp;&nbsp;&nbsp;&nbsp;2500￥</text>
+      <fm-button @click="handlePay" size="xl" type="primary" text="微信支付">
+      </fm-button>
     </view>
   </view>
 </template>
 
 <script>
-import FmPrice from '@/components/FmPrice'
-import FmCopyright from '@/components/FmCopyright'
 import FmButton from '@/components/FmButton'
-import FmImage from '@/components/FmImage'
+import FmIcon from '@/components/FmIcon'
 export default {
   components: {
-    FmPrice,
-    FmCopyright,
     FmButton,
-    FmImage
+    FmIcon
   },
   data () {
     return {
@@ -99,30 +126,78 @@ export default {
         fetch: {}
       },
       startDate: new Date().Format('yyyy-MM-dd'),
-      endDate: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000).Format('yyyy-MM-dd')
+      endDate: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000).Format('yyyy-MM-dd'),
+      formInputs: [
+          {
+            name: '投保公司'
+          },{
+            name: '统一社会信用代码'
+          },{
+            name: '联系人姓名'
+          },{
+            name: '手机号'
+          },{
+            name: '展厅会议名称'
+          }],
+      isChecked: false,
+      appendEnsures:[{
+        name: '门',
+        price: 150,
+        mostCompens: 2000,
+        avoidCompens: 200
+      },
+      {
+        name: '玻璃',
+        price: 150,
+        mostCompens: 2000,
+        avoidCompens: 200
+      }],
+      quantity: 1
     }
   },
   methods: {
     bindDateChange (e) {
       this.startDate = e.mp.detail.value
-      console.log(this.startDate)
     },
-    getToday () {
+    handlePay () {
+      this.$wxp.showModal({
+        title: '操作演示',
+        content: '拉起支付咯😝'
+      }).then(res => {
+        if (res.confirm) {
+          this.goTrade()
+        }
+      })
+    },
+    goTrade () {
+      this.$wxp.redirectTo({
+        url: `/pages/trade/main?tradeId=td01`
+      })
+    },
+    changeCheckAppend (e) {
+      this.isChecked = e.mp.detail.value.length === 0 ? false : true
+    },
+    itemCheckChange (e) {
+      console.log(e)
+    },
+    addQuantity () {
+      this.quantity = this.quantity + 1
     }
   },
   mounted () {
-    // this.getMock()
   }
 }
 </script>
 
 <style lang="less">
 @import "../../asset/style/_variable.less";
-
+.form-box {
+  margin-bottom: 80rpx;
+}
 .fm-checkout {
   min-height: 100%;
   padding-bottom: 56px;
-  background-color: #f4f4f4;
+  background-color: @--background-color-base;
   overflow: hidden;
 }
 .check-img-box {
@@ -138,7 +213,12 @@ export default {
   margin-top: 20rpx;
   padding: 0 4rpx;
   padding-bottom: 20rpx;
-  background-color: #fff;
+  background-color: @--fill-base;
+  border-radius: @--border-radius-small;
+  border: @--border-width-base @--border-style-base @--border-color-extra-light;
+  &.form-card {
+    padding-bottom: 0rpx;
+  }
 }
 .item-card-title {
   padding-left: 20rpx;
@@ -158,16 +238,22 @@ export default {
     display: block;
     text-align: center;
     line-height: 100rpx;
-    font-size: 26rpx;
+    .item-text-font-size();
   }
   .text-label {
     padding-left: 30rpx;
   }
   .hall-name {
-    width: 45%;
+    width: 55%;
+    text {
+      display: block;
+      padding-top: 10rpx;
+      text-align: center;
+      .item-text-font-size();
+    }
   }
   .price {
-    width: 25%;
+    color: red;
   }
 }
 .item-step {
@@ -189,15 +275,12 @@ export default {
   display: block;
 }
 .protect-content-item {
-  display: flex;
-  height: 80rpx;
-  line-height: 80rpx;
-  padding: 0rpx 20rpx;
+  .item-flex();
   text {
     display: block;
     flex: 1;
     text-align: center;
-    font-size: 26rpx;
+    .item-text-font-size();
   }
   .content-name {
     text-align: left;
@@ -205,33 +288,83 @@ export default {
 }
 .form-item {
   position: relative;
-  display: flex;
-  padding: 0rpx 20rpx;
-  height: 80rpx;
-  line-height: 80rpx;
+  .item-flex();
+  .item-text-font-size();
   &:after {
-    position: absolute;
-    content: "";
-    display: block;
-    width: 100%;
-    height: 0;
-    left: 0;
-    bottom: 0;
-    border-bottom: 1px solid #cccccc;
-    transform: scaleY(.3);
+    .setBottomLine(@--border-color-extra-light)
   }
+}
+.append-item {
+  position: relative;
+  .item-flex();
+  text {
+    display: block;
+    .item-text-font-size();
+  }
+  .name-text {
+    width: 20%;
+    text-align: center;
+  }
+  .compens-text {
+    width: 38%;
+    text-align: right;
+  }
+}
+.append-item:after {
+  .setBottomLine(@--border-color-extra-light)
+}
+.form-input {
+  display: block;
+  flex: 1;
+  padding-left: 20rpx;
+  height: 80rpx;
+}
+.quantity-input {
+  display: block;
+  padding-left: 20rpx;
+  width: 80rpx;
+  height: 80rpx;
 }
 .form-date {
   position: relative;
   display: block;
   width: 100%;
-  font-size: 26rpx;
- 
+  .item-text-font-size();
 }
 .fm-checkout-navbar-fixed {
   position: fixed;
   width: 100%;
+  height: 56px;
+  display: flex;
   left: 0;
   bottom: 0;
+  z-index: 99;
+  .total-price {
+    position: absolute;
+    display: block;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    line-height: 56px;
+    font-size: 18px;
+    background-color: @--color-text-regular;
+    color: @--color-white;
+    z-index: 2;
+  }
+  button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    line-height: 56px;
+    display: block;
+    width: auto;
+    min-width: 64px;
+    z-index: 3;
+  }
+}
+.quantity {
+  margin-left: 30rpx;
+  padding-top: 9rpx;
 }
 </style>
