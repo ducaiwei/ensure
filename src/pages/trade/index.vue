@@ -101,7 +101,7 @@ export default {
           {
             orderId: 'orderId01',
             goodName: '商品名称1商品名称1商品名称1商品名称1',
-            goodImage: this.$random.image(),
+            goodImage: '',
             skuLabel: '大杯, 去冰',
             goodNumber: 1,
             goodAmount: 2000
@@ -109,7 +109,7 @@ export default {
           {
             orderId: 'orderId02',
             goodName: '商品名称2',
-            goodImage: this.$random.image(),
+            goodImage: '',
             skuLabel: '大杯, 去冰',
             goodNumber: 1,
             goodAmount: 1500

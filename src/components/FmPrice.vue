@@ -50,7 +50,7 @@ export default {
         const price = this.price
         const mode = this.mode
         if (mode === 'fen') {
-          return this.$money.f2y(price)
+          return ''
         } else {
           return price
         }

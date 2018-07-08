@@ -30,7 +30,7 @@ export default {
           val = value
           break
         case 'timestamp':
-          val = this.$moment.unix(value).format('YYYY-MM-DD HH:mm:ss')
+          val = new Date(value).Format('YYYY-MM-DD HH:mm:ss')
           break
       }
       return val

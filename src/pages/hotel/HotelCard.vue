@@ -61,7 +61,7 @@ export default {
         branchId: 'shopId',
         branchName: '',
         address: '上海市浦东区',
-        avatar: this.$random.image(),
+        avatar: '',
         hour: '10:00 - 22:00'
       }
       this.shop = shop

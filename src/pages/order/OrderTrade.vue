@@ -81,9 +81,9 @@ export default {
           info: {
             branchName: '门店名称' + i,
             tradeId: 'td' + i,
-            tradeStatus: this.$random.number(0, 4),
-            tradeAmount: this.$random.number(1000, 5000),
-            tradeNumber: this.$random.number(1, 9),
+            tradeStatus: '',
+            tradeAmount: '',
+            tradeNumber: '',
             code: 'code' + i
           },
           order: order

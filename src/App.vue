@@ -20,7 +20,6 @@ export default {
     },
     getAppOptions () {
       const options = this.$root.$mp.appOptions
-      console.log(options)
     }
   }
 }
