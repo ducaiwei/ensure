@@ -4,7 +4,7 @@
     <view class="index-left" style="">
       <scroll-view scroll-with-animation="true" scroll-y  @scroll="leftScroll" :scroll-top="leftToTop" style="height: 100vh">
         <view v-for="(item, index) in constants" :key="index" @tap="jumpToSick" :data-id="item.id" :style="{'background':(item.id === currentLeftSelect ? '#fff' : '')}" class="index-left-text">
-          <view :id="item.id">
+          <view class="store-text" :id="item.id">
           {{item.name}}
           </view>
         </view>
@@ -145,7 +145,9 @@ export default {
 }
 
 .index-right-text-top {
-  height: 40rpx;
+  padding-left: 16px;
+  height: 30px;
+  line-height: 30px;
   background: #f5f7f9;
 }
 
@@ -156,8 +158,7 @@ export default {
   width: 100%;
   z-index: 10;
 }
-
-.index-right-text-top {
-  height: 20px;
+.store-text {
+  padding-left: 24px;
 }
 </style>
