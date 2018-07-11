@@ -48,12 +48,6 @@
 					"name": "shop",
 					"pathName": "pages/shop/main",
 					"query": "address=地址"
-				},
-				{
-					"id": 3,
-					"name": "refund",
-					"pathName": "pages/refund/main",
-					"query": ""
 				}
 			]
 		}

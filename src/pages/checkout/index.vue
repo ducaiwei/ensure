@@ -38,14 +38,62 @@
           <view class="item-card-title">
             <text>保障内容</text>
           </view>
-          <view class="protect-content-item">
+          <view>
+            <fm-navbar v-model="navbarChecked" :options="options" size="small"></fm-navbar>
+            <swiper @change="handleChange" :current-item-id="navbarChecked" skip-hidden-item-layout duration="300" class="protect-content-swiper">
+                <swiper-item item-id="280">
+                   <scroll-view scroll-with-animation="true" scroll-y :scroll-top="leftToTop" style="height: 300rpx">
+                    <view class="content-swipe-item">
+                      <view class="swipe-item-title">
+                        <text>
+                          此方案适用于单个宴会厅小于等于2000平米，且容纳人数不超过1000人。
+                        </text>
+                        <text>
+                          人数超出限制，超出人员按 1元/人 收费
+                        </text>
+                      </view>
+                    </view>
+                    <view class="content-swipe-item">
+                      <view class="swipe-item-title">
+                        <text>
+                          此方案适用于单个宴会厅小于等于2000平米，且容纳人数不超过1000人。
+                        </text>
+                        <text>
+                          人数超出限制，超出人员按 1元/人 收费
+                        </text>
+                      </view>
+                    </view>
+                    <view class="content-swipe-item">
+                      <view class="swipe-item-title">
+                        <text>
+                          此方案适用于单个宴会厅小于等于2000平米，且容纳人数不超过1000人。
+                        </text>
+                        <text>
+                          人数超出限制，超出人员按 1元/人 收费
+                        </text>
+                      </view>
+                    </view>
+                  </scroll-view>
+                </swiper-item>
+                <swiper-item item-id="500">
+          +        <view class="content-swipe-item"></view>
+          +      </swiper-item>
+                <swiper-item item-id="1000">
+                  <view class="content-swipe-item"></view>
+                </swiper-item>
+                <swiper-item item-id="1500">
+          +        <view class="content-swipe-item"></view>
+          +      </swiper-item>
+                </swiper>
+          </view>
+          <!-- <view class="protect-content-item">
             <text class="block-text content-name">意外险</text>
             <text class="block-text">最高赔付30万</text>
           </view>
           <view class="protect-content-item">
             <text class="block-text content-name">搭建险</text>
             <text class="block-text">最高赔付60万</text>
-          </view>
+          </view> -->
         </view>
         <view class="item-card form-card">
           <view class="item-card-title">
@@ -109,10 +157,13 @@
 <script>
 import FmButton from '@/components/FmButton'
 import FmIcon from '@/components/FmIcon'
+import FmNavbar from '@/components/FmNavbar'
+
 export default {
   components: {
     FmButton,
-    FmIcon
+    FmIcon,
+    FmNavbar
   },
   data () {
     return {
@@ -152,12 +203,17 @@ export default {
         mostCompens: 2000,
         avoidCompens: 200
       }],
-      quantity: 1
+      quantity: 1,
+      options: ['280', '500', '1000', '1500'],
+      navbarChecked: '280'
     }
   },
   methods: {
     bindDateChange (e) {
       this.startDate = e.mp.detail.value
+    },
+    handleChange (e) {
+      this.navbarChecked = e.mp.detail.currentItemId
     },
     handlePay () {
       this.$wxp.showModal({
@@ -366,5 +422,19 @@ export default {
 .quantity {
   margin-left: 30rpx;
   padding-top: 9rpx;
+}
+.protect-content-swiper {
+  width: 100%;
+  height: 300rpx;
+}
+.content-swipe-item {
+  width: 100%;
+  display: flex;
+}
+.swipe-item-title {
+  display: blcok;
+  text {
+    display: block;
+  }
 }
 </style>
