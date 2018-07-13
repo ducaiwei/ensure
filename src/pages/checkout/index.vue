@@ -41,7 +41,7 @@
           <view>
             <fm-navbar v-model="navbarChecked" :options="options" size="small"></fm-navbar>
             <swiper @change="handleChange" :current-item-id="navbarChecked" skip-hidden-item-layout duration="300" class="protect-content-swiper">
-                <swiper-item item-id="280">
+                <swiper-item item-id="0">
                    <scroll-view scroll-with-animation="true" scroll-y :scroll-top="leftToTop" style="height: 300rpx">
                     <view class="content-swipe-item">
                       <view class="swipe-item-title">
@@ -52,48 +52,27 @@
                           人数超出限制，超出人员按 1元/人 收费
                         </text>
                       </view>
-                    </view>
-                    <view class="content-swipe-item">
-                      <view class="swipe-item-title">
-                        <text>
-                          此方案适用于单个宴会厅小于等于2000平米，且容纳人数不超过1000人。
-                        </text>
-                        <text>
-                          人数超出限制，超出人员按 1元/人 收费
-                        </text>
-                      </view>
-                    </view>
-                    <view class="content-swipe-item">
-                      <view class="swipe-item-title">
-                        <text>
-                          此方案适用于单个宴会厅小于等于2000平米，且容纳人数不超过1000人。
-                        </text>
-                        <text>
-                          人数超出限制，超出人员按 1元/人 收费
-                        </text>
+                      <view class="swipe-item-content">
+                        <view class="swipe-cell-head">
+                          <text v-for="(ce, index) in cellTitles" :key="index">
+                            {{ce}}
+                          </text>
+                        </view>
                       </view>
                     </view>
                   </scroll-view>
                 </swiper-item>
-                <swiper-item item-id="500">
+                <swiper-item item-id="1">
           +        <view class="content-swipe-item"></view>
           +      </swiper-item>
-                <swiper-item item-id="1000">
+                <swiper-item item-id="2">
                   <view class="content-swipe-item"></view>
                 </swiper-item>
-                <swiper-item item-id="1500">
+                <swiper-item item-id="3">
           +        <view class="content-swipe-item"></view>
           +      </swiper-item>
                 </swiper>
           </view>
-          <!-- <view class="protect-content-item">
-            <text class="block-text content-name">意外险</text>
-            <text class="block-text">最高赔付30万</text>
-          </view>
-          <view class="protect-content-item">
-            <text class="block-text content-name">搭建险</text>
-            <text class="block-text">最高赔付60万</text>
-          </view> -->
         </view>
         <view class="item-card form-card">
           <view class="item-card-title">
@@ -157,7 +136,7 @@
 <script>
 import FmButton from '@/components/FmButton'
 import FmIcon from '@/components/FmIcon'
-import FmNavbar from '@/components/FmNavbar'
+import FmNavbar from '@/components/FmOrderNavbar'
 
 export default {
   components: {
@@ -204,8 +183,21 @@ export default {
         avoidCompens: 200
       }],
       quantity: 1,
-      options: ['280', '500', '1000', '1500'],
-      navbarChecked: '280'
+      options: [{
+          type: '基本保费',
+          price: '280'
+        }, {
+          type: '全附加责任',
+          price: '500'
+        }, {
+          type: '原保费合计',
+          price: '1000'
+        }, {
+          type: '优惠价',
+          price: '1500'
+        }],
+      navbarChecked: 0,
+      cellTitles: ['保险责任', '保险明细']
     }
   },
   methods: {
@@ -429,12 +421,30 @@ export default {
 }
 .content-swipe-item {
   width: 100%;
-  display: flex;
 }
 .swipe-item-title {
   display: blcok;
+  padding: 20rpx;
   text {
     display: block;
+    font-size: 24rpx;
+  }
+}
+.swipe-item-content {
+  display: block;
+  width: 90%;
+  margin: auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.swipe-cell-head {
+  display: flex;
+  align-items: center;
+  text {
+    display: block;
+    flex: 1;
+    font-size: 28rpx;
+    text-align: center;
   }
 }
 </style>
