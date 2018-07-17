@@ -12,16 +12,14 @@
       :key="index"
       class="fm-navbar__item"
       :class="[
-        { 'checked': index === _checked },
+        { 'checked': index === checkedIndex },
       ]"
-      :hover-class="index === _checked ? '' : 'active'"
+      :hover-class="index === checkedIndex ? '' : 'active'"
     > 
       <view class="fm-navbar__item__title">{{ item.type }}</view>
-      <view class="fm-navbar__item__title">{{ item.price }}</view>
     </view>
   </view>
   </scroll-view>
-  <!-- </view> -->
 </template>
 
 <script>
@@ -40,6 +38,15 @@ export default {
           'mini'
         ].indexOf(value) > -1
       }
+    },
+    changeCallBack: {
+      type: Function,
+      default: () => {}
+    }
+  },
+  data () {
+    return {
+      checkedIndex: 0
     }
   },
   model: {
@@ -47,23 +54,13 @@ export default {
     event: 'change'
   },
   computed: {
-    _checked: {
-      get () {
-        return this.checked
-      },
-      set (val) {
-        this.$emit('change', val)
-      }
-    }
   },
   watch: {
-    _checked (nv, ov) {
-      console.log(nv)
-    }
   },
   methods: {
     handleTap (item, index) {
-      this._checked = index
+      this.checkedIndex = index
+      this.$emit('changeCallBack', index)
     }
   },
   created () {
@@ -79,7 +76,7 @@ export default {
   position: relative;
   display: block;
   box-sizing: border-box;
-  border: 1px solid #ccc;
+  border-bottom:  1px solid rgba(204,204,204, .3);
 }
 .fm-navbar-container {
   position: relative;
@@ -93,15 +90,14 @@ export default {
   padding-left: 12px;
   box-sizing: inherit;
   font-size: 15px;
+  line-height: 36px;
+  border-right:  1px solid rgba(204,204,204, .3);
+  flex: 1;
   color: @--color-text-secondary;
-  &:first-child {
-    margin-left: 12px;
-  }
 
   &:last-child {
-    margin-right: 12px;
+    border-right: none;
   }
-
   &::after {
     position: absolute;
     top: 0;
@@ -127,7 +123,17 @@ export default {
     &::after {
       opacity: 1;
     }
-
+    &::before {
+      content: "";
+      display: block;
+      width: 0;
+      height: 0;
+      bottom: -10px;
+      left: 50%;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 10px solid red;
+    }
     .fm-navbar__item__title {
       position: relative;
       transition: @--color-transition-base;

@@ -43,9 +43,21 @@ export default {
     },
     handleChange (e) {
       this.navbarChecked = e.mp.detail.currentItemId
+    },
+    getLocation () {
+      this.$wxp.getLocation({
+        type: 'gcj02'
+      }).then(res => {
+        console.log(res)
+        this.location = {
+          latitude: res.latitude,
+          longitude: res.longitude
+        }
+      })
     }
   },
   created () {
+    this.getLocation()
   },
   onPullDownRefresh () {
     this.doRefresh()

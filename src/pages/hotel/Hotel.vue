@@ -3,7 +3,8 @@
   <view class="index" style="height:72.5vh;position: absolute; top: 0;width: 100%;overflow:scroll">
     <view class="index-left" style="">
       <scroll-view scroll-with-animation="true" scroll-y  @scroll="leftScroll" :scroll-top="leftToTop" style="height: 100vh">
-        <view v-for="(item, index) in constants" :key="index" @tap="jumpToSick" :data-id="item.id" :style="{'background':(item.id === currentLeftSelect ? '#fff' : '')}" class="index-left-text">
+        <view v-for="(item, index) in constants" :key="index" @tap="jumpToSick" :data-id="item.id" 
+        :style="{'background-color':(item.id === currentLeftSelect ? '#fff' : '')}" class="index-left-text">
           <view class="store-text" :id="item.id">
           {{item.name}}
           </view>
@@ -49,12 +50,14 @@ export default {
       carts: []
     }
   },
+  watch: {
+  },
   methods: {
     getEachRightItemToTop () {
       var obj = {};
       var totop = 0;
-      const RIGHT_BAR_HEIGHT = 20;      // 右侧每一类的 bar 的高度（固定）
-      const RIGHT_ITEM_HEIGHT = 60;     // 右侧每个子类的高度（固定）
+      const RIGHT_BAR_HEIGHT = 30;      // 右侧每一类的 bar 的高度（固定）
+      const RIGHT_ITEM_HEIGHT = 100;     // 右侧每个子类的高度（固定）
       obj[this.constants[0].id] = totop      // 右侧第一类肯定是到顶部的距离为 0
       for (let i = 1; i < (this.constants.length + 1); i++) {  // 循环来计算每个子类到顶部的高度
         totop += (RIGHT_BAR_HEIGHT + this.constants[i-1].category.length * RIGHT_ITEM_HEIGHT)
@@ -68,7 +71,7 @@ export default {
       for (let i = 0; i < this.constants.length; i++) {
         let left = this.eachRightItemToTop[this.constants[i].id]
         let right = this.eachRightItemToTop[this.constants[i + 1] ? this.constants[i+1].id : 'last']
-        if (e.target.scrollTop < right && e.target.scrollTop >= left) {
+        if (e.mp.detail.scrollTop < right && e.mp.detail.scrollTop >= left) {
           this.currentLeftSelect = this.constants[i].id,
           this.leftToTop = LEFT_ITEM_HEIGHT * i
         }
@@ -94,7 +97,9 @@ export default {
     }
   },
   mounted () {
-    this.getEachRightItemToTop()
+    this.$nextTick(() => {
+      this.getEachRightItemToTop()
+    })
   }
 }
 </script>
@@ -133,9 +138,9 @@ export default {
 }
 
 .index-left-text {
-  padding: 20rpx 10rpx;
-  height: 30px;
-  line-height: 30px;
+  padding: 0rpx 10rpx;
+  height: 50px;
+  line-height: 50px;
 }
 
 .index-right-text {

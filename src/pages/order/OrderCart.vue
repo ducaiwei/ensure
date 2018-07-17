@@ -26,7 +26,7 @@
               <view class="fee">{{item.price}}</view>
               <view class="stepper">
                 <label class="quantity" @tap="addQuantity(item, 'minus')">
-                  <fm-icon icon="icon-minus-circle" color="#09bb07"></fm-icon>
+                  <fm-icon icon="icon-minus-circle" color="#5a5e66"></fm-icon>
                 </label>
                 <view class="value">1</view>
             </view>
@@ -113,7 +113,7 @@ export default {
   bottom: 0;
   left: 0;
   display: block;
-  z-index: 99;
+  z-index: 100;
 }
 
 .fm-order-cart__tips {
@@ -200,7 +200,7 @@ export default {
 	position: fixed;
 	left: 0;
 	width: 100%;
-  bottom: 50px;
+  bottom: 48px;
   background: #fff;
 	z-index: 99;
 }

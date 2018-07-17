@@ -13,7 +13,7 @@
             <fm-icon icon="icon-plus-circle" color="#09bb07"></fm-icon>
           </label>
           <label class="quantity" @tap="addQuantity(item, 'minus')" v-else>
-            <fm-icon icon="icon-minus-circle" color="#09bb07"></fm-icon>
+            <fm-icon icon="icon-minus-circle" color="#5a5e66"></fm-icon>
           </label>
         </view>
       </view>
@@ -54,7 +54,6 @@ export default {
   overflow: hidden;
   display: block;
   box-sizing: border-box;
-  // padding: 16px 0;
 }
 
 .fm-order-good {
@@ -62,7 +61,8 @@ export default {
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  padding: 8px 16px;
+  height: 100px;
+  padding: 0px 16px;
 
   &::before {
     .setActive();

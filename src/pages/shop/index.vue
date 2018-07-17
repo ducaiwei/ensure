@@ -1,6 +1,5 @@
 <template>
   <view class="fm-shop-page">
-
     <view class="fm-shop-navbar">
       <view class="fm-shop-navbar__bd">
         <view class="title">{{ location.name || '附近门店' }}</view>
@@ -9,13 +8,10 @@
         <fm-icon icon="icon-ic_search"></fm-icon>
       </view>
     </view>
-
     <view class="fm-shop-group" v-if="!empty">
       <shop-panel v-for="item in branch" :key="item.branchId" :branch="item"></shop-panel>
     </view>
-
     <fm-empty v-else text="附近暂无门店，可以换个地方试试"></fm-empty>
-
     <fm-copyright></fm-copyright>
   </view>
 </template>

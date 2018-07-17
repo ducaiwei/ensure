@@ -22,6 +22,7 @@
       <view class="fm-trade-detail-card__hd">订单信息</view>
       <view class="fm-trade-detail-card__bd">
         <trade-detail-cell label="订单编号" :value="trade.info.tradeType"></trade-detail-cell>
+        <trade-detail-cell label="保单号" :value="trade.info.tradeType"></trade-detail-cell>
         <trade-detail-cell label="订单状态" :value="trade.info.tradeId" mode="number"></trade-detail-cell>
         <trade-detail-cell label="提交时间" :value="trade.info.createdTimestamp" mode="timestamp"></trade-detail-cell>
       </view>
@@ -39,6 +40,9 @@
         <trade-detail-cell label="保单分数" :value="trade.pay.payId" mode="number"></trade-detail-cell>
         <trade-detail-cell label="保单总价" :value="trade.pay.payId" mode="number"></trade-detail-cell>
         <trade-detail-cell label="生成时间" :value="trade.pay.payId" mode="number"></trade-detail-cell>
+        <trade-detail-cell label="总计费用" :value="trade.pay.payId" mode="number"></trade-detail-cell>
+        <trade-detail-cell label="优惠金额" :value="trade.pay.payId" mode="number"></trade-detail-cell>
+        <trade-detail-cell label="实际支付金额" :value="trade.pay.payId" mode="number"></trade-detail-cell>
       </view>
     </view>
 
