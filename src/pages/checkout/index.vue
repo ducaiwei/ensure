@@ -84,7 +84,7 @@
           </view>
             <view class="form-item">
             购买分数:
-            <input v-model="quantity" class="quantity-input"/>
+            <input v-model="quantity" type="number" class="quantity-input"/>
             <label class="quantity" @tap="addQuantity">
               <fm-icon icon="icon-plus-circle" color="#09bb07"></fm-icon>
             </label>
