@@ -8,10 +8,9 @@
       elementStyle
     ]"
   >
-    <label class="fm-price__label" :class="labelClass" :style="labelStyle" v-if="label">{{ label }}</label>
-    <label v-if="currency" :style="{ fontSize: (fontSize - 6) + 'px' }" class="fm-price__currency">￥</label>
+    <label class="fm-price__label" :class="labelClass" :style="labelStyle">{{ label }}</label>
+    <label  :style="{ fontSize: (fontSize - 6) + 'px' }" class="fm-price__currency">￥</label>
     <label class="fm-price__num">{{ _price }}</label>
-    <label v-if="multiple" class="fm-price__multiple">起</label>
   </label>
 </template>
 
@@ -44,6 +43,10 @@ export default {
     labelClass: String,
     labelStyle: String
   },
+  watch: {
+    price(nv, ov) {
+    }
+  },
   computed: {
     _price: {
       get () {
@@ -64,6 +67,8 @@ export default {
         }
       }
     }
+  },
+  created () {
   }
 }
 </script>

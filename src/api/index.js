@@ -13,6 +13,7 @@ const install = Vue => {
   })
 }
 
-export default {
-  install
+export {
+  install,
+  api
 }

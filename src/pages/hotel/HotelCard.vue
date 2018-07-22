@@ -2,13 +2,14 @@
   <view class="fm-order-card" hover-class="active" @click="goShop">
     <view class="fm-order-panel">
       <view class="fm-order-panel__hd">
-        <fm-image :src="shop.avatar" size="80px" mode="aspectFill" border-radius="2px"></fm-image>
+        <fm-image :src="hotel.picture" size="80px" mode="aspectFill" border-radius="2px"></fm-image>
       </view>
       <view class="fm-order-panel__bd">
         <view class="fm-order-cell">
           <view class="fm-order-cell__bd">
-            <view class="fm-order-cell__bd__title">{{ _title }}</view>
-            <view class="fm-order-cell__bd__desc">营业时间: {{ shop.hour }}</view>
+            <view class="fm-order-cell__bd__title">{{ hotel.name }} 
+              <text v-if="hotel.branchName">({{ hotel.branchName }})</text>
+            </view>
           </view>
           <view class="fm-order-cell__ft">
             <view>
@@ -18,7 +19,7 @@
             <fm-icon icon="icon-chevron-right" color="inherit" size="16px"></fm-icon>
           </view>
         </view>
-        <view class="fm-order-panel__bd__desc">门店地址: {{ shop.address }}</view>
+        <view class="fm-order-panel__bd__desc">门店地址: {{ hotel.address }}</view>
       </view>
     </view>
 
@@ -30,50 +31,30 @@ import FmImage from '@/components/FmImage'
 import FmIcon from '@/components/FmIcon'
 export default {
   name: 'HotelCard',
+  props: {
+    hotel: {
+      type: Object,
+      default: {}
+    }
+  },
   components: {
     FmImage,
     FmIcon
   },
   computed: {
-    _title () {
-      const shop = this.shop
-      return '${shop.businessName}(${shop.branchName})'
-    }
   },
   data () {
     return {
-      shop: {
-        businessId: '',
-        businessName: '',
-        branchId: '',
-        branchName: '',
-        address: '',
-        avatar: '',
-        hour: ''
-      }
     }
   },
   methods: {
-    getShop () {
-      const shop = {
-        businessId: 'brandId',
-        businessName: '上海浦东酒店',
-        branchId: 'shopId',
-        branchName: '',
-        address: '上海市浦东区',
-        avatar: '',
-        hour: '10:00 - 22:00'
-      }
-      this.shop = shop
-    },
-    goShop () {
+    goShop() {
       this.$wxp.navigateTo({
         url: '/pages/shop/main'
       })
     }
   },
-  mounted () {
-    this.getShop()
+  created () {
   }
 }
 </script>

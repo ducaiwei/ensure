@@ -1,17 +1,21 @@
 <template>
   <view>
-    <view class="head-box">
-      <hotel-card></hotel-card>
-      <fm-navbar v-model="navbarChecked" :options="options" size="small"></fm-navbar>
+    <view v-if="hotelDetail">
+      <view class="head-box">
+        <hotel-card :hotel="hotelDetail"></hotel-card>
+        <fm-navbar v-model="navbarChecked" :options="options" size="small"></fm-navbar>
+      </view>
+      <swiper @change="handleChange" :current-item-id="navbarChecked" skip-hidden-item-layout duration="300" class="fm-order-swiper">
+        <swiper-item item-id="展厅">
+          <hotel-mall :hotelHalls="hotelDetail.hotelHalls"></hotel-mall>
+        </swiper-item>
+        <swiper-item item-id="我的订单">
+  +        <order-trade></order-trade>
+        </swiper-item>
+      </swiper>
     </view>
-    <swiper @change="handleChange" :current-item-id="navbarChecked" skip-hidden-item-layout duration="300" class="fm-order-swiper">
-      <swiper-item item-id="展厅">
-        <hotel-mall></hotel-mall>
-      </swiper-item>
-      <swiper-item item-id="我的订单">
-+        <order-trade></order-trade>
-+      </swiper-item>
-    </swiper>
+    <view v-else>
+    </view>
   </view>
 </template>
 
@@ -20,6 +24,8 @@ import HotelCard from './HotelCard'
 import OrderTrade from '../order/OrderTrade'
 import FmNavbar from '@/components/FmNavbar'
 import HotelMall from './Hotel'
+import { mapState,mapActions } from 'vuex'
+import { getDetailMixin } from "../../mixin/methods.js";
 export default {
   components: {
     HotelCard,
@@ -34,8 +40,11 @@ export default {
     }
   },
   computed: {
+    ...mapState(['userToken', 'hotelDetail'])
   },
+  mixins: [getDetailMixin],
   methods: {
+    ...mapActions(['getHotelDetailAction']),
     doRefresh () {
       setTimeout(() => {
         this.$wxp.stopPullDownRefresh()
@@ -43,24 +52,12 @@ export default {
     },
     handleChange (e) {
       this.navbarChecked = e.mp.detail.currentItemId
-    },
-    getLocation () {
-      this.$wxp.getLocation({
-        type: 'gcj02'
-      }).then(res => {
-        console.log(res)
-        this.location = {
-          latitude: res.latitude,
-          longitude: res.longitude
-        }
-      })
     }
   },
-  created () {
-    this.getLocation()
-  },
-  onPullDownRefresh () {
-    this.doRefresh()
+  mounted () {
+    if(this.$mp.query.hotelId) {
+      this.getDetail(this.$mp.query.hotelId, 'detail')
+    }
   }
 }
 </script>

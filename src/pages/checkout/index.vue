@@ -1,37 +1,22 @@
 <template>
   <view class="fm-checkout">
-    <!-- <view class="check-img-box">
-      <image src=""/>
-    </view> -->
     <view class="form-box">
       <form bindsubmit="formSubmit" bindreset="formReset">
         <view class="item-card">
           <view class="item-card-title">
-            <text>上海市浦东酒店</text>
+            <text>{{hotelDetail.name}}({{hotelDetail.branchName}})</text>
           </view>
-          <view class="check-list-item">
-            <image src="http://wx1.sinaimg.cn/mw600/46401622gy1fqnq7rsaa9j20ri0rital.jpg" class="hall-img"/>
+          <view class="check-list-item" v-for="(item ,index) in selectedItems" :key="index">
+            <image :src="item.hallPicture" class="hall-img"/>
             <view class="hall-name">
               <text>
-                宴会厅一楼一厅
+                {{item.hallName}}
               </text>
               <text>
-                (282平)
+                ({{item.hallAreaDesc}})
               </text>
             </view>
-            <text class="block-text price">322￥</text>
-          </view>
-          <view class="check-list-item">
-            <image src="http://wx1.sinaimg.cn/mw600/46401622gy1fqnq7rsaa9j20ri0rital.jpg" class="hall-img"/>
-            <view class="hall-name">
-              <text>
-                宴会厅一楼一厅
-              </text>
-              <text>
-                (282平)
-              </text>
-            </view>
-            <text class="block-text price">322￥</text>
+            <text class="block-text price">{{item.insurancePrice}}￥</text>
           </view>
         </view>
         <view class="item-card protect-content-box">
@@ -78,9 +63,9 @@
               </view>
             </picker>
           </view>
-          <view class="form-item" v-for="(inputItems,index) in  formInputs" :key="index">
-            {{inputItems.name}}:
-            <input type="text" class="form-input"/>
+          <view class="form-item" v-for="(inputItem,index) in  formInputs" :key="index">
+            {{inputItem.name}}:
+            <input type="text" class="form-input" v-model="inputs[model]" />
           </view>
             <view class="form-item">
             购买分数:
@@ -99,18 +84,17 @@
             </checkbox-group>
           </view>
           <checkbox-group @change="itemCheckChange" v-show="isChecked">
-            <view class="append-item"  v-for="(item, index1) in appendEnsures" :key="index1">
+            <view class="append-item"  v-for="(item, index1) in extraEnsures" :key="index1">
               <checkbox class="check-box" value="item.name"/>
               <text class="name-text">{{item.name}}</text>
-              <text class="compens-text">最高赔偿 {{item.mostCompens}}￥</text>
-              <text class="compens-text">免赔偿额 {{item.avoidCompens}}￥</text>
+              <text class="compens-text">{{item.desc}}</text>
             </view>
             <view class="form-item">
               <label for="input">
                 购买份数：
               </label>
-              <input type="text" value="1">
-              <label class="quantity" @tap="addQuantity">
+              <input type="text" v-model="appendNum" class="quantity-input">
+              <label class="quantity" @tap="addAppendNum">
                 <fm-icon icon="icon-plus-circle" color="#09bb07"></fm-icon>
               </label>
             </view>
@@ -119,8 +103,8 @@
       </form>
     </view>
     <view class="fm-checkout-navbar-fixed">
-      <text class="total-price">&nbsp;&nbsp;&nbsp;&nbsp;2500￥</text>
-      <fm-button @click="handlePay" size="xl" type="primary" text="微信支付">
+      <text class="total-price">&nbsp;&nbsp;&nbsp;&nbsp;{{orderAmount.payAmount}}￥</text>
+      <fm-button @tap="handlePay" size="xl" type="primary" text="微信支付">
       </fm-button>
     </view>
   </view>
@@ -130,6 +114,7 @@
 import FmButton from '@/components/FmButton'
 import FmIcon from '@/components/FmIcon'
 import FmNavbar from '@/components/FmOrderNavbar'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -152,88 +137,42 @@ export default {
       endDate: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000).Format('yyyy-MM-dd'),
       formInputs: [
           {
-            name: '投保公司'
+            name: '投保公司',
+            model: 'company'
           },{
-            name: '统一社会信用代码'
+            name: '统一社会信用代码',
+            model: 'creditCode'
           },{
-            name: '联系人姓名'
+            name: '联系人姓名',
+            model: 'userName'
           },{
-            name: '手机号'
+            name: '手机号',
+            model: 'mobile'
           },{
-            name: '展厅会议名称'
+            name: '展厅会议名称',
+            model: 'meetingName'
           }],
       isChecked: false,
-      appendEnsures:[{
-        name: '门',
-        price: 150,
-        mostCompens: 2000,
-        avoidCompens: 200
-      },
-      {
-        name: '玻璃',
-        price: 150,
-        mostCompens: 2000,
-        avoidCompens: 200
-      }],
       quantity: 1,
       navbarChecked: 0,
       cellTitles: ['保险责任', '保险明细'],
-      result: [{
-        type: "280元",
-        details: [{
-          type: "280元",
-          content: "适用方案",
-          detailContent: "单个宴会厅 于等于200平  ，容纳人数 能超过150 "
-        },{
-          type: "280元",
-          content: "适用方案",
-          detailContent: "单个宴会厅 于等于200平  ，容纳人数 能超过150 "
-        },{
-          type: "280元",
-          content: "适用方案",
-          detailContent: "单个宴会厅 于等于200平  ，容纳人数 能超过150 "
-        },{
-          type: "280元",
-          content: "适用方案",
-          detailContent: "单个宴会厅 于等于200平  ，容纳人数 能超过150 "
-        }]
-      },{
-        type: "500元",
-        details: [{
-          type: "500元",
-          content: "被保险雇请人员的人身伤亡",
-          detailContent: "每次事故及累计赔偿限额:RMB 150 万，每 每次及累计赔偿限额:RMB 40万"
-        },{
-          type: "500元",
-          content: "适用方案",
-          detailContent: "单个宴会厅 于等于200平  ，容纳人数 能超过150 "
-        }]
-      },{
-        type: "1000元",
-        details: [{
-          type: "280元",
-          content: "适用方案",
-          detailContent: "单个宴会厅 于等于200平  ，容纳人数 能超过150 "
-        },{
-          type: "280元",
-          content: "适用方案",
-          detailContent: "单个宴会厅 于等于200平  ，容纳人数 能超过150 "
-        }]
-      },{
-        type: "1500元",
-        details: [{
-          type: "280元",
-          content: "适用方案",
-          detailContent: "单个宴会厅 于等于200平  ，容纳人数 能超过150 "
-        },{
-          type: "280元",
-          content: "适用方案",
-          detailContent: "单个宴会厅 于等于200平  ，容纳人数 能超过150 "
-        }]
-      }]
+      result: [],
+      inputs: {
+        company: '',
+        creditCode: '',
+        userName: '',
+        mobile: '',
+        meetingName: ''
+      },
+      appendNum: 1
     }
   },
+  computed: {
+    ...mapState(['userToken', 'selectedItems', 'hotelDetail', 
+    'extraEnsures', 'selectedIds', 'orderAmount'])
+  },
   methods: {
+    ...mapActions(['getContentAction', 'getExtraInsuresAction', 'queryOrderAmountAction']),
     bindDateChange (e) {
       this.startDate = e.mp.detail.value
     },
@@ -266,10 +205,37 @@ export default {
       console.log(e)
     },
     addQuantity () {
+      console.log('ddddddd')
       this.quantity = parseInt(this.quantity) + 1
+      this.queryOrderAmount()
+    },
+    addAppendNum () {
+      this.appendNum = parseInt(this.appendNum) + 1
+    },
+    queryInsuranceContent () {
+      this.getContentAction({token: this.userToken}).then(res => {
+        if (res.code === '100') {
+          this.result = res.result
+        }
+      })
+    },
+    queryOrderAmount () {
+        const params = {}
+        params.token = this.userToken
+        params.hotelId = this.hotelDetail.hotelId
+        params.startDate = this.startDate
+        params.hallIds = this.selectedIds.join(',')
+        params.endDate = this.endDate
+        params.hallBuyCount = this.quantity
+        params.extraInsuranceIds = ''
+        params.extraInsuranceBuyNumber = this.isChecked ? this.appendNum : 0
+        this.queryOrderAmountAction(params)
     }
   },
   mounted () {
+    this.queryOrderAmount()
+    this.queryInsuranceContent()
+    this.getExtraInsuresAction({token: this.userToken})
   }
 }
 </script>
@@ -375,18 +341,21 @@ export default {
 }
 .append-item {
   position: relative;
-  .item-flex();
+  display:flex;
+  align-items: center;
+  padding:20rpx;
   text {
     display: block;
     .item-text-font-size();
   }
   .name-text {
-    width: 20%;
-    text-align: center;
+    width: 25%;
+    text-align: left;
+    padding-left: 20rpx;
   }
   .compens-text {
-    width: 38%;
-    text-align: right;
+    flex: 1;
+    text-align: left;
   }
 }
 .append-item:after {
@@ -480,12 +449,14 @@ export default {
 .protection-view {
   width: 95%;
   margin: auto;
+  margin-top: 20rpx;
   border: 1px solid rgba(204,204,204, .3);
 }
 .table-tr {
   display: flex;
   padding: 20rpx 0;
   width: 100%;
+  align-items: center;
   border-bottom: 1px dashed rgba(204,204,204, .3);
   text {
     flex: 1;

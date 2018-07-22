@@ -2,14 +2,14 @@
   <view class="fm-shop-page">
     <view class="fm-shop-navbar">
       <view class="fm-shop-navbar__bd">
-        <view class="title">{{ location.name || '附近门店' }}</view>
+        <view class="title">附近酒店</view>
       </view>
       <view @click="chooseLocation" class="fm-shop-navbar__ft" hover-class="active">
         <fm-icon icon="icon-ic_search"></fm-icon>
       </view>
     </view>
     <view class="fm-shop-group" v-if="!empty">
-      <shop-panel v-for="item in branch" :key="item.branchId" :branch="item"></shop-panel>
+      <shop-panel v-for="item in hotels" :key="item.hotelId" :branch="item"></shop-panel>
     </view>
     <fm-empty v-else text="附近暂无门店，可以换个地方试试"></fm-empty>
     <fm-copyright></fm-copyright>
@@ -21,6 +21,7 @@ import FmCopyright from '@/components/FmCopyright'
 import FmIcon from '@/components/FmIcon'
 import FmEmpty from '@/components/FmEmpty'
 import ShopPanel from './ShopPanel'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -42,30 +43,10 @@ export default {
       loading: false
     }
   },
+  computed: {
+    ...mapState(['userToken', 'hotels'])
+  },
   methods: {
-    mockBranch (i) {
-      let tmp = []
-      while (i > 0) {
-        tmp.push({
-          branchId: 'bId${i}',
-          branchName: '门店名称${i}',
-          branchAddress: '门店地址门店地址门店地址门店地址门店地址门店地址门店地址${i}',
-          distance: 1001 - i
-        })
-        i--
-      }
-      this.branch = tmp
-    },
-    getLocation () {
-      this.$wxp.getLocation({
-        type: 'gcj02'
-      }).then(res => {
-        this.location = {
-          latitude: res.latitude,
-          longitude: res.longitude
-        }
-      })
-    },
     chooseLocation () {
       this.$wxp.chooseLocation().then(res => {
         this.location = {
@@ -75,25 +56,12 @@ export default {
           longitude: res.longitude
         }
         this.$console.log(res)
-        console.log(res)
-      })
-    },
-    async loadPage () {
-      await this.getLocation()
-      await this.mockBranch(20)
-    },
-    loadMore () {
-      this.$wxp.showModal({
-        title: 'log',
-        content: '下拉触底，加载更多商品'
       })
     }
   },
-  mounted () {
-    this.loadPage()
+  created () {
   },
   onReachBottom () {
-    this.loadMore()
   }
 }
 </script>

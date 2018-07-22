@@ -2,11 +2,11 @@
   <view class="fm-order-goods">
     <view class="fm-order-good" hover-class="active" v-for="(item, index) in goods" :key="index">
       <view class="fm-order-good__hd">
-        <fm-image :src="item.avatar" size="20vw" border-radius="2px" mode="aspectFill"></fm-image>
+        <fm-image :src="item.hallPicture" size="20vw" border-radius="2px" mode="aspectFill"></fm-image>
       </view>
       <view class="fm-order-good__bd">
-        <view class="fm-order-good__bd__title">{{ item.title }}</view>
-        <view class="fm-order-good__bd__desc">{{ item.desc }}</view>
+        <view class="fm-order-good__bd__title">{{ item.hallName }}</view>
+        <view class="fm-order-good__bd__desc">{{ item.hallDesc }} ({{item.hallAreaDesc}})</view>
         <view class="fm-order-good__bd__action">
           <fm-price :price="item.price" :font-size="16" multiple currency></fm-price>
           <label class="quantity" @tap="addQuantity(item, 'plus')" v-if="!item.selected">
@@ -25,7 +25,7 @@
 import FmImage from '@/components/FmImage'
 import FmIcon from '@/components/FmIcon'
 export default {
-  name: 'OrderGoods',
+  name: 'HotelGoods',
   components: {
     FmImage,
     FmIcon,
@@ -75,7 +75,7 @@ export default {
   }
 
   &:last-child {
-    margin-bottom: 24px;
+    // margin-bottom: 24px;
   }
 }
 

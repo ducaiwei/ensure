@@ -4,7 +4,7 @@ import Fly from 'flyio/dist/npm/wx'
 const fly = new Fly()
 
 const timeout = 10 * 1000
-const baseURL = 'https://www.easy-mock.com/mock/5975c598a1d30433d83bf345/fmwapp'
+const baseURL = 'https://ddb2017.com'
 const parseJson = true
 const headers = { 'Content-Type': 'application/json' }
 
@@ -17,7 +17,6 @@ fly.config = {
 
 fly.interceptors.request.use(request => {
   wxp.showNavigationBarLoading()
-  console.log('request:', request)
   return request
 })
 

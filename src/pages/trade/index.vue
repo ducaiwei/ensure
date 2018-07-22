@@ -1,23 +1,5 @@
 <template>
   <view class="fm-trade-detail">
-
-    <!-- 取餐码，start -->
-    <!-- <trade-fetch-card v-model="trade.fetch"></trade-fetch-card> -->
-    <!-- 取餐码，end -->
-
-    <!-- order，start -->
-    <!-- <view class="fm-trade-detail-card">
-      <view class="fm-trade-detail-card__hd">{{ trade.info.branchName }}</view>
-      <view class="fm-trade-detail-card__bd">
-        <trade-detail-order-group :order="trade.order"></trade-detail-order-group>
-      </view>
-      <view class="fm-trade-detail-card-ft">
-        <view>共 {{ trade.info.tradeNumber }} 件商品</view>
-        <fm-price :price="trade.info.tradeAmount" label="实付:" label-class="label" currency color="inherit" font-size="16"></fm-price>
-      </view>
-    </view> -->
-    <!-- order，end -->
-
     <view class="fm-trade-detail-card">
       <view class="fm-trade-detail-card__hd">订单信息</view>
       <view class="fm-trade-detail-card__bd">

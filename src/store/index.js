@@ -1,85 +1,112 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import { api } from '@/api'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    image: [
-      'http://ww3.sinaimg.cn/mw600/0073tLPGgy1fqnsnykiu6j30el0chqc5.jpg',
-      'http://ww3.sinaimg.cn/mw600/006XNEY7gy1fqnsnrsowlj30g40o9q4d.jpg',
-      'http://wx3.sinaimg.cn/mw600/005MHEVwly1fq7c7k0z46j30u011ijyx.jpg',
-      'http://wx3.sinaimg.cn/mw600/005MHEVwly1fq7ci1npeyj30u00u07ez.jpg',
-      'http://wx3.sinaimg.cn/mw600/005MHEVwly1fpyqqg9ibtj30jy0u0ago.jpg',
-      'http://wx3.sinaimg.cn/mw600/005MHEVwly1fpyqqfghsbj30dc08vmxn.jpg',
-      'http://wx1.sinaimg.cn/mw600/005MHEVwly1fqida7izp2j30u00u0wl4.jpg',
-      'http://wx4.sinaimg.cn/mw600/005MHEVwly1fp4dwiskntj30q10wj0zb.jpg',
-      'http://ww3.sinaimg.cn/mw600/0073ob6Pgy1fqnqkgzk4bj318g1uoate.jpg',
-      'http://ww3.sinaimg.cn/mw600/0073tLPGgy1fqnqk1y596j318g1uo1kx.jpg',
-      'http://ws3.sinaimg.cn/mw600/46401622gy1fqnq921blxj20q10wj40m.jpg',
-      'http://wx1.sinaimg.cn/mw600/46401622gy1fqnq7rsaa9j20ri0rital.jpg',
-      'http://wx3.sinaimg.cn/mw600/e0e4ecc3gy1fqnnq2aih6j208c0ci0sw.jpg',
-      'http://ww3.sinaimg.cn/mw600/0073tLPGgy1fqnnj8je39j311w1jge2g.jpg',
-      'http://ws1.sinaimg.cn/mw600/e0e4ecc3gy1fqnkesl71bj20gf0gsgoa.jpg',
-      'http://ww3.sinaimg.cn/mw600/0073tLPGgy1fqnj4vixf8j31kw1ob1fb.jpg',
-      'http://wx3.sinaimg.cn/mw600/e0e4ecc3gy1fqnhl0sttbj215o0v9ald.jpg',
-      'http://wx1.sinaimg.cn/mw600/82e98952gy1fqnhedaqvoj20by0gsgma.jpg',
-      'http://wx2.sinaimg.cn/mw600/006OKWnQgy1fqnga6tfocj30zk0qoq9o.jpg',
-      'http://wx3.sinaimg.cn/mw600/661eb95cgy1fqlkbqkddaj20m80xcwx7.jpg',
-      'http://wx2.sinaimg.cn/mw600/7b386511gy1fqnd9zoed8j20u01hc11v.jpg',
-      'http://ww3.sinaimg.cn/mw600/0073tLPGgy1fqmxv4lwosj31kw11wjx5.jpg',
-      'http://ww3.sinaimg.cn/mw600/006XNEY7gy1fqmxuyaxpaj30hs0lumzs.jpg',
-      'http://wx3.sinaimg.cn/mw600/006r8Ylqly1fqmtbgc76fj30g40mstnd.jpg',
-      'http://wx2.sinaimg.cn/mw600/46401622gy1fqmnyc7tm2j20ku0dw3zd.jpg',
-      'http://wx3.sinaimg.cn/mw600/46401622gy1fqmnxqcpxcj20hs0hs0u3.jpg',
-      'http://ws3.sinaimg.cn/mw600/46401622gy1fqmnwpi6w2j20hs0hhab6.jpg',
-      'http://ws4.sinaimg.cn/mw600/6b0fa1e9gy1fqmmxjgobmj20l00s0n7s.jpg',
-      'http://ww3.sinaimg.cn/mw600/0073ob6Pgy1fqmjgumuh2j30b40g8wfx.jpg',
-      'http://ws2.sinaimg.cn/mw600/e0e4ecc3gy1fqmj47kbcwj215o0rugvd.jpg',
-      'http://wx3.sinaimg.cn/mw600/661eb95cgy1fqlkbjc8oqj20u00xik02.jpg',
-      'http://wx3.sinaimg.cn/mw600/0073tX1Mgy1fpat4n2tdhj30u00mm0tt.jpg',
-      'http://ws1.sinaimg.cn/mw600/0075tcR2gy1fpa5cbu8yjj30j60dlwhb.jpg',
-      'http://ww3.sinaimg.cn/mw600/0073ob6Pgy1fpddyhw426j30fa0mx75t.jpg',
-      'http://ww3.sinaimg.cn/mw600/0073ob6Pgy1fpd7zfismpj30xc1e0x5d.jpg',
-      'http://ww3.sinaimg.cn/mw600/0073ob6Pgy1fpd35r7oixj30dw0k8wft.jpg',
-      'http://ww3.sinaimg.cn/mw600/006XNEY7gy1fpcpd1vgjnj30lu0vh7cs.jpg',
-      'http://ww3.sinaimg.cn/mw600/0073ob6Pgy1fpcjgmktoqj30ey0mit9t.jpg',
-      'http://wx2.sinaimg.cn/mw600/82e98952gy1fqostpxnw7j20xp0yd0w7.jpg',
-      'http://ws3.sinaimg.cn/mw600/82e98952gy1fqostfgnj9j20rj0zkteq.jpg',
-      'http://ws1.sinaimg.cn/mw600/82e98952gy1fqosp7516oj20m80u10uh.jpg',
-      'http://ws3.sinaimg.cn/mw600/82e98952gy1fqost4u804j20v90xbwj1.jpg',
-      'http://wx2.sinaimg.cn/mw600/82e98952gy1fqosox57uvj20ka0zktb2.jpg',
-      'http://wx3.sinaimg.cn/mw600/005MHEVwly1fpyqqe5kxkj30hs0qoabp.jpg',
-      'http://wx1.sinaimg.cn/mw600/006L90Tzgy1fqb7619qfoj31o02yoqhl.jpg',
-      'http://wx3.sinaimg.cn/mw600/661eb95cgy1fqlkbw98p0j20mj0rq3zx.jpg',
-      'http://wx3.sinaimg.cn/mw600/006r8Ylqly1fqpz9ryn1uj30g40m8jus.jpg',
-      'http://ws1.sinaimg.cn/mw600/e0e4ecc3gy1fqpxsnttluj215o0v9qff.jpg',
-      'http://wx3.sinaimg.cn/mw600/00745YaMgy1fqpuhx93uaj30go0gogng.jpg',
-      'http://wx3.sinaimg.cn/mw600/00745YaMgy1fqpuhwo9u5j30go0chq4c.jpg',
-      'http://wx4.sinaimg.cn/mw600/00745YaMgy1fqpu7ck564j30go0godhu.jpg',
-      'http://wx4.sinaimg.cn/mw600/46401622gy1fqppgffrdgj20hs0hsdgp.jpg',
-      'http://wx1.sinaimg.cn/mw600/006afObygy1fqpe54yascj30nw0mhdi5.jpg',
-      'http://wx3.sinaimg.cn/mw600/005RUWNYly1fqp4j1k8bkj30ca0a4wf3.jpg',
-      'http://ww3.sinaimg.cn/mw600/0073ob6Pgy1fqpat7ey2sj30j60pj41m.jpg',
-      'http://wx4.sinaimg.cn/mw600/006r8Ylqly1fgrkfq1ff1j30go0p0qm8.jpg',
-      'http://ws4.sinaimg.cn/mw600/e0e4ecc3gy1fqp1m4c523j20xc1dzquk.jpg',
-      'http://wx4.sinaimg.cn/mw600/40e457abgy1fqozphpbzfj21kw16o4di.jpg',
-      'http://wx4.sinaimg.cn/mw600/46401622gy1fqoxlriffrj20k80k8wgl.jpg',
-      'http://wx1.sinaimg.cn/mw600/46401622gy1fqoxkfo551j20kn0kngn7.jpg',
-      'http://wx2.sinaimg.cn/mw600/661eb95cgy1fqteveu480j20m80dpgpf.jpg',
-      'http://wx2.sinaimg.cn/mw600/40e457abgy1fqseew30esj20u812jwrg.jpg',
-      'http://ws2.sinaimg.cn/mw600/7d74ebd1ly1fqv46ft16cj20k00t2wqe.jpg',
-      'http://ww3.sinaimg.cn/mw600/006XNEY7gy1fqv3v14so2j30u011in14.jpg',
-      'http://wx4.sinaimg.cn/mw600/006XfbArly1fqusx8v69uj31kw23v7ws.jpg',
-      'http://wx3.sinaimg.cn/mw600/3ca863d1ly1fo73qu4821j20qo0zkjvb.jpg',
-      'http://wx3.sinaimg.cn/mw600/82e98952gy1fqup5be1s4j20k00oyaca.jpg',
-      'http://ww3.sinaimg.cn/mw600/006XNEY7gy1fqt767nxy5j30f00mijtc.jpg',
-      'http://ww3.sinaimg.cn/mw600/006XNEY7gy1fqt75vb9b9j30fr0m8q59.jpg',
-      'http://wx3.sinaimg.cn/mw600/7b386511gy1fqtmknz62bj20rs15oah4.jpg'
-    ]
+    userToken: '',
+    hotels: [],
+    hotelDetail: null,
+    selectedItems: [],
+    orderAmount: {},
+    extraEnsures: [],
+    selectedIds: []
   },
-  mutations: {},
-  actions: {}
+  mutations: {
+    setUserToken (state, data) {
+      state.userToken = data
+    },
+    setHotels (state, data) {
+      state.hotels = data
+    },
+    setDetail (state, data) {
+      state.hotelDetail = data
+    },
+    setSelectedItems (state, data) {
+      state.selectedItems = data
+    },
+    setExtraInsures (state, data) {
+      state.extraEnsures = data
+    },
+    setOrderAmount (state, data) {
+      state.orderAmount = data
+    },
+    setSelectedIds (state, data) {
+      state.selectedIds = data
+    }
+  },
+  actions: {
+    getUserTokenAction ({commit}, params) {
+      return api.requests.getToken(params).then(res => {
+        if (res.code === '100') {
+          commit('setUserToken', res.result)
+        }
+        return res
+      }, err => {
+        console.error(err)
+      })
+    },
+    getNearHotelsAction ({commit}, params) {
+      return api.requests.getNearHotels(params).then(res => {
+        if (res.code === '100') {
+          commit('setHotels', res.result)
+        }
+        return res
+      }, err => {
+        console.error(err)
+      })
+    },
+    getHotelDetailAction ({commit}, params) {
+      return api.requests.getHotelDetail(params).then(res => {
+        if (res.code === '100') {
+          commit('setDetail', res.result)
+        }
+        return res
+      }, err => {
+        console.error(err)
+      })
+    },
+    getHallsPriceAction ({commit}, params) {
+      return api.requests.getHallsPrice(params).then(res => {
+        return res
+      }, err => {
+        console.error(err)
+      })
+    },
+    getContentAction ({commit}, params) {
+      return api.requests.queryContent(params).then(res => {
+        return res
+      }, err => {
+        console.error(err)
+      })
+    },
+    setSelectedItemsAction ({commit}, params) {
+      commit('setSelectedItems', params)
+    },
+    getExtraInsuresAction ({commit}, params) {
+      return api.requests.queryExtraInsures(params).then(res => {
+        if (res.code === '100') {
+          commit('setExtraInsures', res.result)
+        }
+      }, err => {
+        console.error(err)
+      })
+    },
+    queryOrderAmountAction ({commit}, params) {
+      return api.requests.queryOrderAmount(params).then(res => {
+        if (res.code === '100') {
+          commit('setOrderAmount', res.result)
+        }
+        return res
+      }, err => {
+        console.error(err)
+      })
+    },
+    setSeletedIdsAction ({commit}, params) {
+      commit('setSelectedIds', params)
+    }
+  }
 })
 
 Vue.prototype.$store = store

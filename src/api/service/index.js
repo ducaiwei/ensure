@@ -1,3 +1,3 @@
-import * as test from './test'
+import * as requests from './requests'
 
-export { test }
+export { requests }

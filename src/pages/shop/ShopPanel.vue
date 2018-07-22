@@ -1,12 +1,12 @@
 <template>
-  <view @click="goOrder(_branchId)" class="fm-shop-panel" hover-class="active">
+  <view @click="goOrder(branch.hotelId)" class="fm-shop-panel" hover-class="active">
     <view class="fm-shop-panel__bd">
-      <view class="fm-shop-panel-title">{{ _branchName }}</view>
-      <view class="fm-shop-panel-desc">{{ _branchAddress }}</view>
+      <view class="fm-shop-panel-title">{{ branch.name }}</view>
+      <view class="fm-shop-panel-desc">{{ branch.address }}</view>
     </view>
     <view class="fm-shop-panel__ft">
       <fm-icon icon="icon-map-marker-radius" color="#3ac939" size="24px"></fm-icon>
-      <view>{{ _distance }}</view>
+      <view>{{ branch.distance }}</view>
     </view>
   </view>
 </template>
@@ -19,22 +19,9 @@ export default {
     FmIcon
   },
   props: {
-    branch: Object,
-    branchId: String,
-    branchName: String,
-    branchAddress: String,
-    distance: Number
+    branch: Object
   },
   computed: {
-    _branchId () {
-      return this.branchId || this.branch.branchId
-    },
-    _branchName () {
-      return this.branchName || this.branch.branchName
-    },
-    _branchAddress () {
-      return this.branchAddress || this.branch.branchAddress
-    },
     _distance () {
       const distance = this.distance || this.branch.distance
       if (distance < 0) {
@@ -49,7 +36,7 @@ export default {
   methods: {
     goOrder (branchId) {
       this.$wxp.reLaunch({
-        url: '/pages/hotel/main?branch=${branchId}'
+        url: `/pages/hotel/main?hotelId=${branchId}`
       })
     }
   }

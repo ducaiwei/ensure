@@ -1,13 +1,19 @@
 <template>
   <view>
     <view class="fm-order-cart">
+      <view class="fm-order-cart__tips" v-if="cart.length > 0">
+        <label>{{promotionMessage}} </label>
+      </view>
       <view class="fm-order-cart__nav">
         <view class="fm-order-cart__nav__badage">
           <fm-button @tap="cascadeToggle" mode="fab" type="primary" :disabled="cart.length === 0" no-shadow class-name="fm-order-cart__nav__btn" icon="icon-cart"></fm-button>
           <label class="content" v-if="cart.length > 0">{{ cart.length }}</label>
         </view>
-        <view class="fm-order-cart__nav__main">
-          <fm-price v-model="totalPrice" font-size="24" color="#ffffff" currency></fm-price>
+        <view class="fm-order-cart__nav__main" v-if="cart.length > 0">
+          <label class="fm-price" style="">
+            <label  :style="{ fontSize: (fontSize - 6) + 'px' }" class="fm-price__currency">￥</label>
+            <label class="fm-price__num">{{ totalPrice }}</label>
+          </label>
         </view>
         <fm-button @tap="goCheckout" type="primary" text="去结算" size="l" noShadow inline class-name="fm-order-cart__nav__buy"></fm-button>
       </view>
@@ -22,8 +28,8 @@
           </view>
           <scroll-view class="modal-body" scroll-y="true">
             <view class="item" v-for="(item, index) in cart" :key="index">
-              <view class="title">{{item.title}}</view>
-              <view class="fee">{{item.price}}</view>
+              <view class="title">{{item.hallName}}</view>
+              <view class="fee">{{item.insurancePrice}}</view>
               <view class="stepper">
                 <label class="quantity" @tap="addQuantity(item, 'minus')">
                   <fm-icon icon="icon-minus-circle" color="#5a5e66"></fm-icon>
@@ -51,20 +57,24 @@ export default {
     cart: {
       type: Array,
       default: []
+    },
+    prices: {
+      type: Object,
+      default: null
     }
   },
   data () {
     return {
-      showModal: false,
-      totalPrice: 0
-    }
-  },
-  watch: {
-    cart (nv, ov) {
-      this.compiteTotalPrice()
+      showModal: false
     }
   },
   computed: {
+    totalPrice () {
+      return this.prices.toalAmount
+    },
+    promotionMessage () {
+      return this.prices.promotionMessage
+    }
   },
   methods: {
     goCheckout () {
