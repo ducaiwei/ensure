@@ -7,7 +7,8 @@
       </view>
       <swiper @change="handleChange" :current-item-id="navbarChecked" skip-hidden-item-layout duration="300" class="fm-order-swiper">
         <swiper-item item-id="展厅">
-          <hotel-mall :hotelHalls="hotelDetail.hotelHalls"></hotel-mall>
+          <hotel-mall :hotelHalls="hotelDetail.hotelHalls" v-if="hotelDetail.hotelHalls.length > 0"></hotel-mall>
+          <view class="null-text" v-else>暂无数据</view>
         </swiper-item>
         <swiper-item item-id="我的订单">
   +        <order-trade></order-trade>
@@ -71,5 +72,10 @@ export default {
 .head-box {
   display: block;
   height: 175.vh;
+}
+.null-text {
+  font-size: 28rpx;
+  color: #ccc;
+  text-align: center;
 }
 </style>
