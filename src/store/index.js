@@ -105,6 +105,13 @@ const store = new Vuex.Store({
     },
     setSeletedIdsAction ({commit}, params) {
       commit('setSelectedIds', params)
+    },
+    createOrderAction ({commit}, params) {
+      return api.requests.createOrder(params).then(res => {
+        return res
+      }, err => {
+        console.error(err)
+      })
     }
   }
 })

@@ -65,7 +65,7 @@
           </view>
           <view class="form-item" v-for="(inputItem,index) in  formInputs" :key="index">
             {{inputItem.name}}:
-            <input type="text" class="form-input" v-model="inputs[model]" />
+            <input type="text" class="form-input" v-model="inputs[inputItem.model]" />
           </view>
             <view class="form-item">
             购买分数:
@@ -172,7 +172,8 @@ export default {
     'extraEnsures', 'selectedIds', 'orderAmount'])
   },
   methods: {
-    ...mapActions(['getContentAction', 'getExtraInsuresAction', 'queryOrderAmountAction']),
+    ...mapActions(['getContentAction', 'getExtraInsuresAction', 
+    'queryOrderAmountAction', 'createOrderAction']),
     bindDateChange (e) {
       this.startDate = e.mp.detail.value
     },
@@ -182,16 +183,89 @@ export default {
       } else {
         this.navbarChecked = e.mp.detail.currentItemId
       }
+    },
+    checkForm () {
+      let flag = false
+      if (!this.inputs.company) {
+        this.$wxp.showToast({
+          title: '请填写投保公司',
+          icon: 'none'
+        })
+        return flag
+      }
+      if (!this.inputs.creditCode) {
+        this.$wxp.showToast({
+          title: '请填写统一社会信用代码',
+          icon: 'none'
+        })
+        return flag
+      }
+      if (!this.inputs.userName) {
+        this.$wxp.showToast({
+          title: '请填写联系人姓名',
+          icon: 'none'
+        })
+        return flag
+      }
+      if (!this.inputs.mobile) {
+        this.$wxp.showToast({
+          title: '请填写联系电话',
+          icon: 'none'
+        })
+        return flag
+      }
+      if (!this.inputs.meetingName) {
+        this.$wxp.showToast({
+          title: '请填写展厅会议名称',
+          icon: 'none'
+        })
+        return flag
+      }
+      return true
     }, 
     handlePay () {
-      this.$wxp.showModal({
-        title: '操作演示',
-        content: '拉起支付咯😝'
-      }).then(res => {
-        if (res.confirm) {
-          this.goTrade()
-        }
-      })
+      if (this.checkForm()) {
+        const params = {}
+        params.token = this.userToken
+        params.hotelId = this.hotelDetail.hotelId
+        params.hotelHallIds = this.selectedIds.join(',')
+        params.startDate = this.startDate
+        params.endDate = this.endDate
+        params.hallBuyCount = this.quantity
+        params.extraInsuranceIds = ''
+        params.extraInsuranceBuyCount = 0
+        params.companyName = this.inputs.company
+        params.uniformSocialCreditCode = this.inputs.creditCode
+        params.contactsName = this.inputs.userName
+        params.contactsMobile = this.inputs.mobile
+        params.meetingName = this.inputs.meetingName
+        this.createOrderAction(params).then(res => {
+          if (res.code === '100') {
+            const payParams = {}
+            this.$wxp.requestPayment({
+              timeStamp: res.result.timestamp,
+              nonceStr: res.result.nonceStr,
+              package: res.result.packageX,
+              signType: res.result.signType,
+              paySign: res.result.paySign,
+              success: (r) => {
+                console.log(r)
+              },
+              fail: (f) => {
+                console.log(f)
+              }
+            })
+          }
+        })
+        // this.$wxp.showModal({
+        //   title: '操作演示',
+        //   content: '拉起支付咯😝'
+        // }).then(res => {
+        //   if (res.confirm) {
+        //     this.goTrade()
+        //   }
+        // })
+      }
     },
     goTrade () {
       this.$wxp.redirectTo({
@@ -202,10 +276,8 @@ export default {
       this.isChecked = e.mp.detail.value.length === 0 ? false : true
     },
     itemCheckChange (e) {
-      console.log(e)
     },
     addQuantity () {
-      console.log('ddddddd')
       this.quantity = parseInt(this.quantity) + 1
       this.queryOrderAmount()
     },

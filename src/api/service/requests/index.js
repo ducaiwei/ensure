@@ -24,3 +24,6 @@ export function queryExtraInsures (query) {
 export function queryOrderAmount (query) {
   return fly.post('/order/queryOrderPayAmount', query)
 }
+export function createOrder (query) {
+  return fly.post('/order/createOrder', query)
+}
