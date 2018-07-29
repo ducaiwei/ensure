@@ -3,10 +3,10 @@
     <view @click="handleTrade(trade.info.tradeId)" v-for="(trade, tradeIndex) in list" :key="tradeIndex" class="fm-order-trade-panel" hover-class="active">
       <view class="fm-order-trade-cell">
         <view class="fm-order-trade-cell__bd">
-          {{ trade.info.branchName }}
+          {{ trade.hotelName }}
         </view>
         <view class="fm-order-trade-cell__ft">
-          <label class="info">订单状态</label>
+          <label class="info">{{trade.orderStatus}}</label>
           <fm-icon icon="icon-chevron-right" size="24px" color="#d8dce5"></fm-icon>
         </view>
       </view>

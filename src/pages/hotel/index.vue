@@ -11,7 +11,7 @@
           <view class="null-text" v-else>暂无数据</view>
         </swiper-item>
         <swiper-item item-id="我的订单">
-  +        <order-trade></order-trade>
+         <order-trade></order-trade>
         </swiper-item>
       </swiper>
     </view>

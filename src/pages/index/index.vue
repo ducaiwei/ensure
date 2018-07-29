@@ -56,19 +56,18 @@ export default {
         },
         userLogin () {
             this.$wxp.login().then(res => {
-                console.log(res)
                 if (res) {
                    this.getUserTokenAction({code: res.code, 
                    encryptMesage: '360bb48b-5316-458a-903e-9a44c7f339b1'}).then(res => {
-                       if (res.code === '100') {
+                        if (res.code === '100') {
                            this.$wxp.setStorage({
                                key: 'token',
                                data: res.result
                            })
                            this.getLocation()
-                       }
+                        }
                    }, err => {
-
+                       console.error(err)
                    })
                }
             })

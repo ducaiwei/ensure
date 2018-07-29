@@ -4,7 +4,9 @@
       <form bindsubmit="formSubmit" bindreset="formReset">
         <view class="item-card">
           <view class="item-card-title">
-            <text>{{hotelDetail.name}}({{hotelDetail.branchName}})</text>
+            <text>{{hotelDetail.name}}
+              <text v-if="hotelDetail.branchName">({{hotelDetail.branchName}})</text>
+            </text>
           </view>
           <view class="check-list-item" v-for="(item ,index) in selectedItems" :key="index">
             <image :src="item.hallPicture" class="hall-img"/>
@@ -85,7 +87,7 @@
           </view>
           <checkbox-group @change="itemCheckChange" v-show="isChecked">
             <view class="append-item"  v-for="(item, index1) in extraEnsures" :key="index1">
-              <checkbox class="check-box" value="item.name"/>
+              <checkbox class="check-box" :value="item.id"/>
               <text class="name-text">{{item.name}}</text>
               <text class="compens-text">{{item.desc}}</text>
             </view>
@@ -103,7 +105,7 @@
       </form>
     </view>
     <view class="fm-checkout-navbar-fixed">
-      <text class="total-price">&nbsp;&nbsp;&nbsp;&nbsp;{{orderAmount.payAmount}}￥</text>
+      <text class="total-price">&nbsp;&nbsp;&nbsp;&nbsp;{{orderAmount.payAmount / 100}}￥</text>
       <fm-button @tap="handlePay" size="xl" type="primary" text="微信支付">
       </fm-button>
     </view>
@@ -125,14 +127,6 @@ export default {
   data () {
     return {
       distance: undefined,
-      trade: {
-        info: {
-          tradeNumber: 5,
-          tradeAmount: 5200
-        },
-        good: [],
-        fetch: {}
-      },
       startDate: new Date().Format('yyyy-MM-dd'),
       endDate: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000).Format('yyyy-MM-dd'),
       formInputs: [
@@ -164,16 +158,22 @@ export default {
         mobile: '',
         meetingName: ''
       },
-      appendNum: 1
+      appendNum: 1,
+      appendIds: []
     }
   },
   computed: {
     ...mapState(['userToken', 'selectedItems', 'hotelDetail', 
     'extraEnsures', 'selectedIds', 'orderAmount'])
   },
+  watch: {
+    appendIds (nv, ov) {
+      this.queryOrderAmount()
+    }
+  },
   methods: {
     ...mapActions(['getContentAction', 'getExtraInsuresAction', 
-    'queryOrderAmountAction', 'createOrderAction']),
+    'queryOrderAmountAction', 'createOrderAction', 'deleteOrderAction']),
     bindDateChange (e) {
       this.startDate = e.mp.detail.value
     },
@@ -252,19 +252,19 @@ export default {
                 console.log(r)
               },
               fail: (f) => {
-                console.log(f)
+                this.deleteOrderAction({
+                  token: this.userToken,
+                  oid: res.oid
+                }).then(r => {
+                  consoe.log(r)
+                })
+              },
+              complete: (result) => {
+                console.log(result)
               }
             })
           }
         })
-        // this.$wxp.showModal({
-        //   title: '操作演示',
-        //   content: '拉起支付咯😝'
-        // }).then(res => {
-        //   if (res.confirm) {
-        //     this.goTrade()
-        //   }
-        // })
       }
     },
     goTrade () {
@@ -276,6 +276,7 @@ export default {
       this.isChecked = e.mp.detail.value.length === 0 ? false : true
     },
     itemCheckChange (e) {
+      this.appendIds = e.mp.detail.value
     },
     addQuantity () {
       this.quantity = parseInt(this.quantity) + 1
@@ -299,8 +300,8 @@ export default {
         params.hallIds = this.selectedIds.join(',')
         params.endDate = this.endDate
         params.hallBuyCount = this.quantity
-        params.extraInsuranceIds = ''
-        params.extraInsuranceBuyNumber = this.isChecked ? this.appendNum : 0
+        params.extraInsuranceIds = this.appendIds.join(',')
+        params.extraInsuranceBuyCount = this.isChecked && this.appendIds.length > 0 ? this.appendNum : 0
         this.queryOrderAmountAction(params)
     }
   },

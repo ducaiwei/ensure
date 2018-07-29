@@ -112,6 +112,27 @@ const store = new Vuex.Store({
       }, err => {
         console.error(err)
       })
+    },
+    deleteOrderAction ({commit}, params) {
+      return api.requests.deleteOrder(params).then(res => {
+        return res
+      }, err => {
+        console.error(err)
+      })
+    },
+    queryOrdersAction ({commit}, params) {
+      return api.requests.queryOrders(params).then(res => {
+        return res
+      }, err => {
+        console.error(err)
+      })
+    },
+    queryOrderDetailAction ({commit}, params) {
+      return api.requests.queryOrderDetail(params).then(res => {
+        return res
+      }, err => {
+        console.error(err)
+      })
     }
   }
 })

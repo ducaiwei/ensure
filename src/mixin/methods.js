@@ -6,7 +6,7 @@ let getDetailMixin = {
                token: this.userToken
             }).then(res => {
                 if(page !== 'detail') {
-                    this.$wxp.navigateTo({
+                    this.$wxp.redirectTo({
                         url: '/pages/hotel/main'
                     })
                 }

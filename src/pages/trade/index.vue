@@ -105,11 +105,6 @@ export default {
     }
   },
   methods: {
-    // setNavigationBarTitle () {
-    //   this.$wxp.setNavigationBarTitle({
-    //     title: '订单详情'
-    //   })
-    // },
     getQuery () {
       const query = this.$root.$mp.query
       this.tradeId = query.tradeId

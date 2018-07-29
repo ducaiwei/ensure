@@ -2,32 +2,33 @@
   <scroll-view @scrolltolower="loadMore" scroll-y scroll-with-animation enable-back-to-top class="fm-order-trade">
 
     <!-- 状态筛选picker，start -->
-    <fm-picker @change="handlePickerChange(pickerSelected)" v-model="pickerSelected" :range="pickerOptions" range-key="label">
+    <!-- <fm-picker @change="handlePickerChange(pickerSelected)" v-model="pickerSelected" :range="pickerOptions" range-key="label">
       <fm-button mode="fab" type="primary" size="m" icon="icon-filter-variant"></fm-button>
-    </fm-picker>
+    </fm-picker> -->
     <!-- 状态筛选picker，end -->
 
     <!-- 订单列表，start -->
-    <order-trade-group :list="trade.list" v-if="!empty"></order-trade-group>
+    <!-- <order-trade-group :list="orders" v-if="orders.length > 0"></order-trade-group> -->
 
-    <fm-empty v-else text="暂无订单，快下一单试试吧"></fm-empty>
+    <fm-empty v-if="orders.length <= 0" text="暂无订单，快下一单试试吧"></fm-empty>
 
-    <fm-copyright></fm-copyright>
+    <!-- <fm-copyright></fm-copyright> -->
     <!-- 订单列表，end -->
   </scroll-view>
 </template>
 
 <script>
 import FmButton from '@/components/FmButton'
-import FmPicker from '@/components/FmPicker'
+// import FmPicker from '@/components/FmPicker'
 import FmEmpty from '@/components/FmEmpty'
 import FmCopyright from '@/components/FmCopyright'
 import OrderTradeGroup from './OrderTradeGroup'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'OrderTrade',
   components: {
     FmButton,
-    FmPicker,
+    // FmPicker,
     FmEmpty,
     FmCopyright,
     OrderTradeGroup
@@ -55,46 +56,27 @@ export default {
         total: 0
       },
       empty: false,
-      loading: false
+      loading: false,
+      orders: []
+      // loading: true
     }
   },
+  computed: {
+    ...mapState(['userToken', 'hotels'])
+  },
   methods: {
+    ...mapActions(['queryOrdersAction']),
     handlePickerChange (val) {
       console.log('根据已选订单类型获取订单，订单类型:', val)
     },
-    mockTrade () {
-      let list = []
-      let i = 10
-      let order = []
-      let oi = 3
-      while (oi > 0) {
-        order.push({
-          orderId: 'orderId' + oi,
-          goodName: '商品名称' + oi,
-          skuLabel: '大杯, 去冰',
-          goodNumber: oi
-        })
-        oi--
-      }
-      while (i > 0) {
-        list.push({
-          info: {
-            branchName: '门店名称' + i,
-            tradeId: 'td' + i,
-            tradeStatus: '',
-            tradeAmount: '',
-            tradeNumber: '',
-            code: 'code' + i
-          },
-          order: order
-        })
-        i--
-      }
-      this.trade = {
-        list: list,
-        pages: 10,
-        total: 100
-      }
+    queryOrders () {
+      this.queryOrdersAction({token: this.userToken}).then(res => {
+        // this.loading = false
+        if (res.code === '100'){
+          this.orders = res.result.list
+          console.log(this.orders)
+        }
+      })
     },
     loadMore () {
       this.$wxp.showModal({
@@ -104,7 +86,7 @@ export default {
     }
   },
   mounted () {
-    this.mockTrade()
+    this.queryOrders()
   }
 }
 </script>

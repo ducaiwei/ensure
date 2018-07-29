@@ -27,3 +27,12 @@ export function queryOrderAmount (query) {
 export function createOrder (query) {
   return fly.post('/order/createOrder', query)
 }
+export function deleteOrder (query) {
+  return fly.post('/order/deleteOrder', query)
+}
+export function queryOrders (query) {
+  return fly.post('/order/queryOrders', query)
+}
+export function queryOrderDetail (query) {
+  return fly.post('/order/queryOrderById', query)
+}
