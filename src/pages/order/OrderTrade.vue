@@ -1,5 +1,5 @@
 <template>
-  <scroll-view @scrolltolower="loadMore" scroll-y scroll-with-animation enable-back-to-top class="fm-order-trade">
+  <scroll-view scroll-y scroll-with-animation enable-back-to-top class="fm-order-trade">
 
     <!-- 状态筛选picker，start -->
     <!-- <fm-picker @change="handlePickerChange(pickerSelected)" v-model="pickerSelected" :range="pickerOptions" range-key="label">
@@ -8,7 +8,7 @@
     <!-- 状态筛选picker，end -->
 
     <!-- 订单列表，start -->
-    <!-- <order-trade-group :list="orders" v-if="orders.length > 0"></order-trade-group> -->
+    <order-trade-group :list="orders" v-if="orders.length > 0"></order-trade-group>
 
     <fm-empty v-if="orders.length <= 0" text="暂无订单，快下一单试试吧"></fm-empty>
 
@@ -57,12 +57,12 @@ export default {
       },
       empty: false,
       loading: false,
-      orders: []
-      // loading: true
+      orders: [],
+      loading: true
     }
   },
   computed: {
-    ...mapState(['userToken', 'hotels'])
+    ...mapState(['userToken'])
   },
   methods: {
     ...mapActions(['queryOrdersAction']),
@@ -71,18 +71,13 @@ export default {
     },
     queryOrders () {
       this.queryOrdersAction({token: this.userToken}).then(res => {
-        // this.loading = false
+        this.loading = false
         if (res.code === '100'){
           this.orders = res.result.list
-          console.log(this.orders)
         }
       })
     },
     loadMore () {
-      this.$wxp.showModal({
-        title: 'log',
-        content: '下拉触底，加载更多商品'
-      })
     }
   },
   mounted () {

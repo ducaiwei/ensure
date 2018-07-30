@@ -12,9 +12,9 @@
       :key="index"
       class="fm-navbar__item"
       :class="[
-        { 'checked': index === checkedIndex },
+        { 'checked': index == checkedIndex },
       ]"
-      :hover-class="index === checkedIndex ? '' : 'active'"
+      :hover-class="index == checkedIndex ? '' : 'active'"
     > 
       <view class="fm-navbar__item__title">{{ item.type }}</view>
     </view>
@@ -53,14 +53,15 @@ export default {
     prop: 'checked',
     event: 'change'
   },
-  computed: {
-  },
   watch: {
+    checked(nv, ov) {
+      this.checkedIndex = nv
+    }
   },
   methods: {
     handleTap (item, index) {
       this.checkedIndex = index
-      this.$emit('changeCallBack', index)
+      this.$emit('change', index)
     }
   },
   created () {

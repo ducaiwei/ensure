@@ -10,7 +10,7 @@
   >
     <label class="fm-price__label" :class="labelClass" :style="labelStyle">{{ label }}</label>
     <label  :style="{ fontSize: (fontSize - 6) + 'px' }" class="fm-price__currency">￥</label>
-    <label class="fm-price__num">{{ _price }}</label>
+    <label class="fm-price__num">{{ price/100 }}</label>
   </label>
 </template>
 

@@ -1,27 +1,27 @@
 <template>
   <view class="fm-order-trade-group">
-    <view @click="handleTrade(trade.info.tradeId)" v-for="(trade, tradeIndex) in list" :key="tradeIndex" class="fm-order-trade-panel" hover-class="active">
+    <view @click="handleTrade(trade.oid)" v-for="(trade, tradeIndex) in list" :key="tradeIndex" class="fm-order-trade-panel" hover-class="active">
       <view class="fm-order-trade-cell">
         <view class="fm-order-trade-cell__bd">
           {{ trade.hotelName }}
         </view>
         <view class="fm-order-trade-cell__ft">
-          <label class="info">{{trade.orderStatus}}</label>
+          <label class="info">{{trade.orderStatusDesc}}</label>
           <fm-icon icon="icon-chevron-right" size="24px" color="#d8dce5"></fm-icon>
         </view>
       </view>
       <view class="fm-order-trade-order-group">
-        <view v-for="(order, orderIndex) in trade.order" :key="orderIndex" class="fm-order-trade-order">
+        <view v-for="(order, orderIndex) in trade.hotelHallBean.hotelHalls" :key="orderIndex" class="fm-order-trade-order">
           <view class="name">
-            <label>{{ order.goodName }}</label>
-            <label class="sku-label" v-if="order.skuLabel">[{{ order.skuLabel }}]</label>
+            <label>{{ order.hallName }}</label>
+            <label class="sku-label" v-if="order.insuranceDesc">[{{ order.insuranceDesc }}]</label>
           </view>
-          <view class="number">× {{ order.goodNumber }}</view>
+          <view class="number">× {{ trade.hotelHallBean.buyCount }}</view>
         </view>
       </view>
       <view class="fm-order-trade-ft">
-        <view>共 {{ trade.info.tradeNumber }} 件商品</view>
-        <fm-price :price="trade.info.tradeAmount" label="实付: " label-class="label" currency color="inherit" font-size="16"></fm-price>
+        <view></view>
+        <fm-price :price="trade.totalAmount" label="实付: " label-class="label" currency color="inherit" font-size="16"></fm-price>
       </view>
     </view>
   </view>
@@ -44,7 +44,7 @@ export default {
   methods: {
     handleTrade (tradeId) {
       this.$wxp.navigateTo({
-        url: '/pages/trade/main?tradeId=${tradeId}'
+        url: `/pages/trade/main?tradeId=${tradeId}`
       })
     }
   }

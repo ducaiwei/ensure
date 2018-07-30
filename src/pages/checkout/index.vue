@@ -26,7 +26,7 @@
             <text>保障内容</text>
           </view>
           <view class="protection-view">
-            <fm-navbar @changeCallBack="handleChange" v-model="navbarChecked" :options="result" size="small"></fm-navbar>
+            <fm-navbar @change="handleChange" v-model="navbarChecked" ref="navBar" :options="result" size="small"></fm-navbar>
             <swiper @change="handleChange" :current-item-id="navbarChecked" skip-hidden-item-layout duration="300" class="protect-content-swiper">
                 <swiper-item :item-id="index"  v-for="(con ,index) in result" :key="index">
                    <scroll-view scroll-with-animation="true" scroll-y :scroll-top="leftToTop" style="height: 300rpx">
@@ -248,10 +248,11 @@ export default {
               package: res.result.packageX,
               signType: res.result.signType,
               paySign: res.result.paySign,
-              success: (r) => {
+              'success': (r) => {
+                console.log('paysuccess=======')
                 console.log(r)
               },
-              fail: (f) => {
+              'fail': (f) => {
                 this.deleteOrderAction({
                   token: this.userToken,
                   oid: res.oid
@@ -259,7 +260,7 @@ export default {
                   consoe.log(r)
                 })
               },
-              complete: (result) => {
+              'complete': (result) => {
                 console.log(result)
               }
             })

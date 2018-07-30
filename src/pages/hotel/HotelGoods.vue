@@ -75,7 +75,7 @@ export default {
   }
 
   &:last-child {
-    // margin-bottom: 24px;
+    margin-bottom: 24px;
   }
 }
 
