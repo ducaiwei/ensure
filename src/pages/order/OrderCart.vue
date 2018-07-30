@@ -210,7 +210,7 @@ export default {
 	position: fixed;
 	left: 0;
 	width: 100%;
-  bottom: 48px;
+  bottom: 70px;
   background: #fff;
 	z-index: 99;
 }
