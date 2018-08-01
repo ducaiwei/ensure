@@ -6,7 +6,7 @@
     </view>
     <view class="fm-shop-panel__ft">
       <fm-icon icon="icon-map-marker-radius" color="#3ac939" size="24px"></fm-icon>
-      <view>{{ branch.distance }}</view>
+      <view>{{ _distance }}</view>
     </view>
   </view>
 </template>
@@ -23,13 +23,13 @@ export default {
   },
   computed: {
     _distance () {
-      const distance = this.distance || this.branch.distance
+      const distance = this.branch.distance
       if (distance < 0) {
         return '未知'
       } else if (distance < 1000) {
-        return '${distance} m'
+        return `${distance.toFixed(2)} m`
       } else {
-        return '${distance / 1000} km'
+        return `${(distance / 1000).toFixed(2)} km`
       }
     }
   },
