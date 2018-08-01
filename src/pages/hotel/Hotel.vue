@@ -6,7 +6,7 @@
         <view v-for="(item, index) in hotelHalls" :key="index" @tap="jumpToSick" :data-id="'f' + item.hallFloorType" 
         :style="{'background-color':(item.hallFloorType === currentLeftSelect ? '#fff' : '')}" class="index-left-text">
           <view class="store-text" :id="'f' + item.hallFloorType">
-          {{item.hallFloorType}}
+          {{item.hallFloorType}}楼
           </view>
         </view>
       </scroll-view>
@@ -14,7 +14,7 @@
     <view class="index-right">
       <scroll-view scroll-with-animation="true" scroll-y style="height: 100vh;" @scroll="rightScroll" :scroll-into-view="toView" bindscrolltolower="lower">
           <view v-for="(item, index1) in hotelHalls" :key="index1" :id="'f' + item.hallFloorType">
-            <view class="index-right-text-top">{{item.hallFloorType}}</view>
+            <view class="index-right-text-top">{{item.hallFloorType}}楼</view>
             <hotel-goods v-if="!emptyGoods" :goods="item.details" @addQuantity="addQuantity"></hotel-goods>
           </view>
       </scroll-view>

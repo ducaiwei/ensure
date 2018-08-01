@@ -11,8 +11,8 @@
         </view>
         <view class="fm-order-cart__nav__main" v-if="cart.length > 0">
           <label class="fm-price" style="">
-            <label  :style="{ fontSize: (fontSize - 6) + 'px' }" class="fm-price__currency">￥</label>
-            <label class="fm-price__num">{{ totalPrice }}</label>
+            <label class="fm-price__num">￥</label>
+            <label class="fm-price__num" v-if="totalPrice > 0">{{ totalPrice / 100 }}</label>
           </label>
         </view>
         <fm-button @tap="goCheckout" type="primary" text="去结算" size="l" noShadow inline class-name="fm-order-cart__nav__buy"></fm-button>
@@ -29,7 +29,7 @@
           <scroll-view class="modal-body" scroll-y="true">
             <view class="item" v-for="(item, index) in cart" :key="index">
               <view class="title">{{item.hallName}}</view>
-              <view class="fee">{{item.insurancePrice}}</view>
+              <view class="fee">{{item.insurancePrice / 100}}</view>
               <view class="stepper">
                 <label class="quantity" @tap="addQuantity(item, 'minus')">
                   <fm-icon icon="icon-minus-circle" color="#5a5e66"></fm-icon>
@@ -125,7 +125,10 @@ export default {
   display: block;
   z-index: 100;
 }
-
+.fm-price__num {
+  font-size: 18px;
+  color: #fff;
+}
 .fm-order-cart__tips {
   position: relative;
   display: flex;
