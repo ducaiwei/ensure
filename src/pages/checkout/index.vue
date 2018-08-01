@@ -89,6 +89,7 @@
             <view class="append-item"  v-for="(item, index1) in extraEnsures" :key="index1">
               <checkbox class="check-box" :value="item.id"/>
               <text class="name-text">{{item.name}}</text>
+              <text class="name-text">￥{{item.price / 100}}</text>
               <text class="compens-text">{{item.desc}}</text>
             </view>
             <view class="form-item">
@@ -233,8 +234,8 @@ export default {
         params.startDate = this.startDate
         params.endDate = this.endDate
         params.hallBuyCount = this.quantity
-        params.extraInsuranceIds = ''
-        params.extraInsuranceBuyCount = 0
+        params.extraInsuranceIds = this.appendIds.join(',')
+        params.extraInsuranceBuyCount = this.isChecked && this.appendIds.length > 0 ? this.appendNum : 0
         params.companyName = this.inputs.company
         params.uniformSocialCreditCode = this.inputs.creditCode
         params.contactsName = this.inputs.userName
@@ -247,7 +248,7 @@ export default {
             this.$wxp.requestPayment({
               timeStamp: res.result.timestamp,
               nonceStr: res.result.nonceStr,
-              package: 'prepay_id=' + res.result.packageX,
+              package: res.result.packageX,
               signType: res.result.signType,
               paySign: res.result.paySign
             }).then(re => {

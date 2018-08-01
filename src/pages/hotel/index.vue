@@ -8,10 +8,12 @@
       <swiper @change="handleChange" :current-item-id="navbarChecked" skip-hidden-item-layout duration="300" class="fm-order-swiper">
         <swiper-item item-id="展厅">
           <hotel-mall :hotelHalls="hotelDetail.hotelHalls" v-if="hotelDetail.hotelHalls.length > 0"></hotel-mall>
-          <view class="null-text" v-else>暂无数据</view>
+          <view class="null-text" v-else>
+            <fm-empty text="暂无数据"></fm-empty>
+          </view>
         </swiper-item>
         <swiper-item item-id="我的订单">
-         <order-trade></order-trade>
+         <order-trade ref="orderTrade"></order-trade>
         </swiper-item>
       </swiper>
     </view>
@@ -26,13 +28,15 @@ import OrderTrade from '../order/OrderTrade'
 import FmNavbar from '@/components/FmNavbar'
 import HotelMall from './Hotel'
 import { mapState,mapActions } from 'vuex'
+import FmEmpty from '@/components/FmEmpty'
 import { getDetailMixin } from "../../mixin/methods.js";
 export default {
   components: {
     HotelCard,
     FmNavbar,
     OrderTrade,
-    HotelMall
+    HotelMall,
+    FmEmpty
   },
   data () {
     return {
@@ -53,6 +57,9 @@ export default {
     },
     handleChange (e) {
       this.navbarChecked = e.mp.detail.currentItemId
+      if (this.navbarChecked === '我的订单') {
+        this.$refs.orderTrade.queryOrders()
+      }
     }
   },
   mounted () {
@@ -74,6 +81,10 @@ export default {
   height: 175.vh;
 }
 .null-text {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: #f5f7fa;
   font-size: 28rpx;
   color: #ccc;
   text-align: center;

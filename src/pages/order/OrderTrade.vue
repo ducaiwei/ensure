@@ -76,8 +76,6 @@ export default {
           this.orders = res.result.list
         }
       })
-    },
-    loadMore () {
     }
   },
   mounted () {
