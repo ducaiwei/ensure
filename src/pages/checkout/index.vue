@@ -159,7 +159,8 @@ export default {
         meetingName: ''
       },
       appendNum: 1,
-      appendIds: []
+      appendIds: [],
+      oid: ''
     }
   },
   computed: {
@@ -242,27 +243,24 @@ export default {
         this.createOrderAction(params).then(res => {
           if (res.code === '100') {
             const payParams = {}
+            this.oid = res.result
             this.$wxp.requestPayment({
               timeStamp: res.result.timestamp,
               nonceStr: res.result.nonceStr,
               package: res.result.packageX,
               signType: res.result.signType,
-              paySign: res.result.paySign,
-              'success': (r) => {
-                console.log('paysuccess=======')
+              paySign: res.result.paySign
+            }).then(re => {
+              this.$wxp.navigateTo({
+                url: `/pages/trade/main?tradeId=${res.result.oid}`
+              })
+            }, err => {
+              this.deleteOrderAction({
+                token: this.userToken,
+                oid: res.result.oid
+              }).then(r => {
                 console.log(r)
-              },
-              'fail': (f) => {
-                this.deleteOrderAction({
-                  token: this.userToken,
-                  oid: res.oid
-                }).then(r => {
-                  consoe.log(r)
-                })
-              },
-              'complete': (result) => {
-                console.log(result)
-              }
+              })
             })
           }
         })
