@@ -245,7 +245,7 @@ export default {
             this.$wxp.requestPayment({
               timeStamp: res.result.timestamp,
               nonceStr: res.result.nonceStr,
-              package: res.result.packageX,
+              package: 'prepay_id=' + res.result.packageX,
               signType: res.result.signType,
               paySign: res.result.paySign,
               'success': (r) => {
@@ -253,6 +253,7 @@ export default {
                 console.log(r)
               },
               'fail': (f) => {
+                console.log('ddddddddd')
                 this.deleteOrderAction({
                   token: this.userToken,
                   oid: res.oid
