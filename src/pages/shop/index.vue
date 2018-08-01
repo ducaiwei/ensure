@@ -47,15 +47,22 @@ export default {
     ...mapState(['userToken', 'hotels'])
   },
   methods: {
+    ...mapActions(['getNearHotelsAction']),
     chooseLocation () {
       this.$wxp.chooseLocation().then(res => {
-        this.location = {
-          name: res.name,
-          address: res.address,
+        console.log(res)
+        const param = {
+          token: this.userToken,
           latitude: res.latitude,
           longitude: res.longitude
         }
-        this.$console.log(res)
+        this.getNearHotelsAction(param)
+        // this.location = {
+        //   name: res.name,
+        //   address: res.address,
+        //   latitude: res.latitude,
+        //   longitude: res.longitude
+        // }
       })
     }
   },
