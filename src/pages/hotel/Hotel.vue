@@ -1,10 +1,10 @@
 <template>
 <view class="container">
-  <view class="index" style="height:72.5vh;position: absolute; top: 0;width: 100%;overflow:scroll">
+  <view class="index" style="position: absolute; top: 0;width: 100%;overflow:scroll">
     <view class="index-left" style="">
-      <scroll-view scroll-with-animation="true" scroll-y  @scroll="leftScroll" :scroll-top="leftToTop" style="height: 100vh">
+      <scroll-view class="left-scroll" scroll-with-animation="false" scroll-y  @scroll="leftScroll" :scroll-top="leftToTop" style="height: 100vh">
         <view v-for="(item, index) in hotelHalls" :key="index" @tap="jumpToSick" :data-id="'f' + item.hallFloorType" 
-        :style="{'background-color':(item.hallFloorType === currentLeftSelect ? '#fff' : '')}" class="index-left-text">
+        :style="{'background-color':('f' + item.hallFloorType === currentLeftSelect ? '#fff' : '')}" class="index-left-text">
           <view class="store-text" :id="'f' + item.hallFloorType">
           {{item.hallFloorType}}楼
           </view>
@@ -12,7 +12,7 @@
       </scroll-view>
     </view>
     <view class="index-right">
-      <scroll-view scroll-with-animation="true" scroll-y style="height: 100vh;" @scroll="rightScroll" :scroll-into-view="toView" bindscrolltolower="lower">
+      <scroll-view class="right-scroll" scroll-with-animation="false" scroll-y  @scroll="rightScroll" :scroll-into-view="toView" @scrolltolower="lower">
           <view v-for="(item, index1) in hotelHalls" :key="index1" :id="'f' + item.hallFloorType">
             <view class="index-right-text-top">{{item.hallFloorType}}楼</view>
             <hotel-goods v-if="!emptyGoods" :goods="item.details" @addQuantity="addQuantity"></hotel-goods>
@@ -50,7 +50,7 @@ export default {
     return {
       halls: this.hotelHalls,
       toView: null,                 // 左 => 右联动 右scroll-into-view 所需的id
-      currentLeftSelect: this.hotelHalls[0].hallFloorType,      // 当前左侧选择的
+      currentLeftSelect: 'f' + this.hotelHalls[0].hallFloorType,      // 当前左侧选择的
       eachRightItemToTop: [],       // 右侧每类数据到顶部的距离（用来与 右 => 左 联动时监听右侧滚动到顶部的距离比较）
       leftToTop: 0,
       carts: [],
@@ -68,30 +68,33 @@ export default {
       var totop = 0;
       const RIGHT_BAR_HEIGHT = 30;      // 右侧每一类的 bar 的高度（固定）
       const RIGHT_ITEM_HEIGHT = 100;     // 右侧每个子类的高度（固定）
-      obj[this.hotelHalls[0].hallFloorType] = totop      // 右侧第一类肯定是到顶部的距离为 0
+      obj['f' + this.hotelHalls[0].hallFloorType] = totop      // 右侧第一类肯定是到顶部的距离为 0
       for (let i = 1; i < (this.hotelHalls.length + 1); i++) {  // 循环来计算每个子类到顶部的高度
         totop += (RIGHT_BAR_HEIGHT + this.hotelHalls[i-1].details.length * RIGHT_ITEM_HEIGHT)
-        obj[this.hotelHalls[i] ? this.hotelHalls[i].hallFloorType : 'last'] = totop    // 这个的目的是 例如有两类，最后需要 0-1 1-2 2-3 的数据，所以需要一个不存在的 'last' 项，此项即为第一类加上第二类的高度。
+        obj[this.hotelHalls[i] ? 'f' + this.hotelHalls[i].hallFloorType : 'last'] = totop    // 这个的目的是 例如有两类，最后需要 0-1 1-2 2-3 的数据，所以需要一个不存在的 'last' 项，此项即为第一类加上第二类的高度。
       }
       this.eachRightItemToTop = obj
-      return obj
     },
     rightScroll (e) {   // 监听右侧的滚动事件与 eachRightItemToTop 的循环作对比 从而判断当前可视区域为第几类，从而渲染左侧的对应类。
       const LEFT_ITEM_HEIGHT = 30
       for (let i = 0; i < this.hotelHalls.length; i++) {
-        let left = this.eachRightItemToTop[this.hotelHalls[i].hallFloorType]
-        let right = this.eachRightItemToTop[this.hotelHalls[i + 1] ? this.hotelHalls[i+1].hallFloorType : 'last']
+        let left = this.eachRightItemToTop['f' + this.hotelHalls[i].hallFloorType]
+        let right = this.eachRightItemToTop[this.hotelHalls[i + 1] ? 'f' + this.hotelHalls[i+1].hallFloorType : 'last']
         if (e.mp.detail.scrollTop < right && e.mp.detail.scrollTop >= left) {
-          this.currentLeftSelect = this.hotelHalls[i].hallFloorType,
+          this.currentLeftSelect = 'f' + this.hotelHalls[i].hallFloorType
           this.leftToTop = LEFT_ITEM_HEIGHT * i
         }
       }
     },
     jumpToSick (e) {    // 左侧类的点击事件
-      this.toView = e.target.id || e.target.dataset.id,
+      this.toView = e.target.id || e.target.dataset.id
       this.currentLeftSelect = e.target.id || e.target.dataset.id
     },
     lower: function (e) {
+      const LEFT_ITEM_HEIGHT = 30
+      const l =  this.hotelHalls.length
+      this.currentLeftSelect = 'f' + this.hotelHalls[l - 1].hallFloorType
+      this.leftToTop = LEFT_ITEM_HEIGHT * (l - 1)
     },
     addQuantity (item, type) {
       if (type === 'plus') {
@@ -99,8 +102,8 @@ export default {
         this.carts.push(item)
       } else {
         if (this.carts.length === 1) {
-          this.carts = []
-          this.selectedHallIds = []
+          this.carts.splice(0, 1)
+          this.selectedHallIds.splice(0, 1)
         } else {
           let index = 0
           for (let i = 0; i < this.carts.length; i++) {
@@ -135,6 +138,9 @@ export default {
 
 <style lang="less">
 @import "../../asset/style/_variable.less";
+.right-scroll, .left-scroll {
+  height: calc(~"100vh - 124px - 48px");
+}
 .container {
   position: relative;
   width: 100%;

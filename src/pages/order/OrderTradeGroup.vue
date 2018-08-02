@@ -21,7 +21,7 @@
       </view>
       <view class="fm-order-trade-ft">
         <view></view>
-        <fm-price :price="trade.totalAmount" label="实付: " label-class="label" currency color="inherit" font-size="16"></fm-price>
+        <fm-price :price="trade.payAmount" label="实付: " label-class="label" currency color="inherit" font-size="16"></fm-price>
       </view>
     </view>
   </view>

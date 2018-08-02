@@ -11,8 +11,8 @@
         </view>
         <view class="fm-order-cart__nav__main" v-if="cart.length > 0">
           <label class="fm-price" style="">
-            <label class="fm-price__num">￥</label>
-            <label class="fm-price__num" v-if="totalPrice > 0">{{ totalPrice / 100 }}</label>
+            <label class="order-cart-price">￥</label>
+            <label class="order-cart-price" v-if="totalPrice > 0">{{ totalPrice / 100 }}</label>
           </label>
         </view>
         <fm-button @tap="goCheckout" type="primary" text="去结算" size="l" noShadow inline class-name="fm-order-cart__nav__buy"></fm-button>
@@ -125,7 +125,7 @@ export default {
   display: block;
   z-index: 100;
 }
-.fm-price__num {
+.order-cart-price {
   font-size: 18px;
   color: #fff;
 }

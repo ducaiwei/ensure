@@ -78,7 +78,7 @@ export default {
 }
 .head-box {
   display: block;
-  height: 175.vh;
+  height: 124px;
 }
 .null-text {
   display: block;

@@ -10,7 +10,7 @@
   >
     <label class="fm-price__label" :class="labelClass" :style="labelStyle">{{ label }}</label>
     <label  :style="{ fontSize: (fontSize - 6) + 'px' }" class="fm-price__currency">￥</label>
-    <label class="fm-price__num">{{ price/100 }}</label>
+    <label class="fm-price__num">{{ _price }}</label>
   </label>
 </template>
 
@@ -43,28 +43,13 @@ export default {
     labelClass: String,
     labelStyle: String
   },
-  watch: {
-    price(nv, ov) {
-    }
-  },
   computed: {
     _price: {
       get () {
-        const price = this.price
-        const mode = this.mode
-        if (mode === 'fen') {
-          return ''
-        } else {
-          return price
-        }
+        console.log((this.price / 100).toFixed(2))
+        return (this.price / 100).toFixed(2)
       },
       set (val) {
-        const mode = this.mode
-        if (mode === 'fen') {
-          this.$emit('change', this.$money.y2f(val))
-        } else {
-          this.$emit('change', val)
-        }
       }
     }
   },
