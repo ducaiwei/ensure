@@ -70,7 +70,7 @@ export default {
   },
   computed: {
     totalPrice () {
-      return this.prices.toalAmount
+      return this.prices.payAmount
     },
     promotionMessage () {
       return this.prices.promotionMessage

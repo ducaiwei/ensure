@@ -113,6 +113,9 @@
         </view>
       </form>
     </view>
+    <view class="fm-order-cart__tips">
+      <label>已优惠{{orderAmount.promotionAmount / 100}}元 </label>
+    </view>
     <view class="fm-checkout-navbar-fixed">
       <text class="total-price">&nbsp;&nbsp;&nbsp;&nbsp;{{orderAmount.payAmount / 100}}￥</text>
       <fm-button @tap="handlePay" size="xl" type="primary" text="微信支付">
@@ -620,4 +623,21 @@ export default {
 .item-card.append-card {
   padding-bottom: 0rpx;
 }
+.fm-order-cart__tips {
+  position:fixed;
+  display:flex;
+  width: 100%;
+  left: 0;
+  bottom: 56px;
+  text-align:center;
+  height:24px;
+  line-height:24px;
+  background-color:#fffad6;
+  font-size:11px;
+  justify-content:center;
+  opacity:.96;
+  color:#5a5e66;
+  z-index:1000;
+}
+
 </style>
