@@ -73,8 +73,11 @@
           </view>
             <view class="form-item">
             购买分数:
-            <input v-model="quantity" type="number" class="quantity-input"/>
-            <label class="quantity" @tap="addQuantity">
+            <label class="quantity" @tap="addQuantity('minus')" :class="quantity > 1 ? 'show' : 'hidden'">
+              <fm-icon icon="icon-minus-circle" color="#5a5e66"></fm-icon>
+            </label>
+            <input v-model="quantity" type="number" class="quantity-input" readonly/>
+            <label class="quantity" @tap="addQuantity('plus')">
               <fm-icon icon="icon-plus-circle" color="#09bb07"></fm-icon>
             </label>
           </view>
@@ -98,8 +101,11 @@
               <label for="input">
                 购买份数：
               </label>
-              <input type="text" v-model="appendNum" class="quantity-input">
-              <label class="quantity" @tap="addAppendNum">
+              <label class="quantity" @tap="addAppendNum('minus')" :class="appendNum > 1 ? 'show' : 'hidden'">
+                <fm-icon icon="icon-minus-circle" color="#5a5e66"></fm-icon>
+              </label>
+              <text class="quantity-input">{{appendNum}}</text>
+              <label class="quantity" @tap="addAppendNum('plus')">
                 <fm-icon icon="icon-plus-circle" color="#09bb07"></fm-icon>
               </label>
             </view>
@@ -178,12 +184,18 @@ export default {
   },
   watch: {
     appendIds (nv, ov) {
+      if (nv.length === 0) {
+        this.appendNum = 1
+      }
       this.queryOrderAmount()
     },
     startDate (nv, ov) {
       this.queryOrderAmount()
     },
     endDate (nv, ov) {
+      this.queryOrderAmount()
+    },
+    appendNum (nv, ov) {
       this.queryOrderAmount()
     }
   },
@@ -295,12 +307,27 @@ export default {
     itemCheckChange (e) {
       this.appendIds = e.mp.detail.value
     },
-    addQuantity () {
-      this.quantity = parseInt(this.quantity) + 1
+    addQuantity (type) {
+      if (type === 'plus') {
+        this.quantity = parseInt(this.quantity) + 1
+      } else {
+        this.quantity = parseInt(this.quantity) - 1
+      }
       this.queryOrderAmount()
     },
-    addAppendNum () {
-      this.appendNum = parseInt(this.appendNum) + 1
+    addAppendNum (type) {
+      if (this.appendIds.length <= 0) {
+        this.$wxp.showToast({
+          title: '请先选择附加险',
+          icon: 'none'
+        })
+        return
+      }
+      if (type === 'plus') {
+        this.appendNum = parseInt(this.appendNum) + 1
+      } else {
+        this.appendNum = parseInt(this.appendNum) - 1
+      }
     },
     queryInsuranceContent () {
       this.getContentAction({token: this.userToken}).then(res => {
@@ -462,6 +489,7 @@ export default {
   padding-left: 20rpx;
   width: 80rpx;
   height: 80rpx;
+  text-align: center;
 }
 .form-date {
   position: relative;
@@ -504,6 +532,12 @@ export default {
 .quantity {
   margin-left: 30rpx;
   padding-top: 9rpx;
+}
+.quantity.show {
+  opacity: 1;
+}
+.quantity.hidden {
+  opacity: 0;
 }
 .protect-content-swiper {
   width: 100%;
