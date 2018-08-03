@@ -11,12 +11,17 @@
         </view>
       </view>
       <view class="fm-order-trade-order-group">
-        <view v-for="(order, orderIndex) in trade.hotelHallBean.hotelHalls" :key="orderIndex" class="fm-order-trade-order">
+        <view class="fm-order-trade-order">
           <view class="name">
-            <label>{{ order.hallName }}</label>
-            <label class="sku-label" v-if="order.insuranceDesc">[{{ order.insuranceDesc }}]</label>
+            <label>订单号</label>
+            <label class="sku-label">[{{ trade.oid }}]</label>
           </view>
-          <view class="number">× {{ trade.hotelHallBean.buyCount }}</view>
+        </view>
+        <view class="fm-order-trade-order">
+          <view class="name">
+            <label>保单号</label>
+            <label class="sku-label">[{{ trade.insuranceCode }}]</label>
+          </view>
         </view>
       </view>
       <view class="fm-order-trade-ft">
@@ -47,6 +52,9 @@ export default {
         url: `/pages/trade/main?tradeId=${tradeId}`
       })
     }
+  },
+  created () {
+    console.log(this.list)
   }
 }
 </script>

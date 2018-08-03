@@ -76,7 +76,7 @@ export default {
       this.eachRightItemToTop = obj
     },
     rightScroll (e) {   // 监听右侧的滚动事件与 eachRightItemToTop 的循环作对比 从而判断当前可视区域为第几类，从而渲染左侧的对应类。
-      const LEFT_ITEM_HEIGHT = 30
+      const LEFT_ITEM_HEIGHT = 50
       for (let i = 0; i < this.hotelHalls.length; i++) {
         let left = this.eachRightItemToTop['f' + this.hotelHalls[i].hallFloorType]
         let right = this.eachRightItemToTop[this.hotelHalls[i + 1] ? 'f' + this.hotelHalls[i+1].hallFloorType : 'last']

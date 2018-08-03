@@ -140,7 +140,7 @@ export default {
     return {
       distance: undefined,
       startDate: new Date().Format('yyyy-MM-dd'),
-      endDate: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000).Format('yyyy-MM-dd'),
+      endDate: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000).Format('yyyy-MM-dd'),
       formInputs: [
           {
             name: '投保公司',
