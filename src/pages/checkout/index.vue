@@ -29,7 +29,7 @@
             <fm-navbar @change="handleChange" v-model="navbarChecked" ref="navBar" :options="result" size="small"></fm-navbar>
             <swiper @change="handleChange" :current-item-id="navbarChecked" skip-hidden-item-layout duration="300" class="protect-content-swiper">
                 <swiper-item :item-id="index"  v-for="(con ,index) in result" :key="index">
-                   <scroll-view scroll-with-animation="true" scroll-y :scroll-top="leftToTop" style="height: 300rpx">
+                   <scroll-view scroll-with-animation="true" scroll-y :scroll-top="leftToTop" style="height: 400rpx">
                     <view class="content-swipe-item">
                       <view class="swipe-table-content">
                         <view class="tbale-body">
@@ -50,7 +50,7 @@
             <text>投保信息</text>
           </view>
           <view class="form-item">
-            <picker mode="date"  class="form-date" :value="startDate" :start="'2015-09-01'" @change="bindDateChange">
+            <picker mode="date"  class="form-date" :value="startDate" @change="bindDateChange">
              <view class="form-date">
                  保险开始时间: 
                  <text>{{ startDate }}</text>
@@ -58,7 +58,7 @@
             </picker>
           </view>
            <view class="form-item">
-            <picker mode="date" :value="endDate" :start="'2015-09-01'" @change="bindDateChange"  class="form-date">
+            <picker mode="date" :value="endDate"  @change="bingEndDateChange"  class="form-date">
              <view>
                  保险结束时间: 
                  <text>{{ endDate }}</text>
@@ -67,7 +67,9 @@
           </view>
           <view class="form-item" v-for="(inputItem,index) in  formInputs" :key="index">
             {{inputItem.name}}:
-            <input type="text" class="form-input" v-model="inputs[inputItem.model]" />
+            <input  v-model="inputs[inputItem.model]" type="text" maxlength="18"  class="form-input" v-if="inputItem.model === 'creditCode'"/>
+            <input  v-model="inputs[inputItem.model]" type="number" maxlength="11"  class="form-input" v-else-if="inputItem.model === 'mobile'"/>
+            <input  v-model="inputs[inputItem.model]" type="text"  class="form-input" v-else/>
           </view>
             <view class="form-item">
             购买分数:
@@ -133,19 +135,25 @@ export default {
       formInputs: [
           {
             name: '投保公司',
-            model: 'company'
+            model: 'company',
+            type: 'text'
           },{
             name: '统一社会信用代码',
-            model: 'creditCode'
+            model: 'creditCode',
+            type: 'text',
+            maxLength: 18
           },{
             name: '联系人姓名',
-            model: 'userName'
+            model: 'userName',
+            type: 'text'
           },{
             name: '手机号',
-            model: 'mobile'
+            model: 'mobile',
+            type: 'number'
           },{
             name: '展厅会议名称',
-            model: 'meetingName'
+            model: 'meetingName',
+            type: 'text'
           }],
       isChecked: false,
       quantity: 1,
@@ -171,6 +179,12 @@ export default {
   watch: {
     appendIds (nv, ov) {
       this.queryOrderAmount()
+    },
+    startDate (nv, ov) {
+      this.queryOrderAmount()
+    },
+    endDate (nv, ov) {
+      this.queryOrderAmount()
     }
   },
   methods: {
@@ -178,6 +192,9 @@ export default {
     'queryOrderAmountAction', 'createOrderAction', 'deleteOrderAction']),
     bindDateChange (e) {
       this.startDate = e.mp.detail.value
+    },
+    bingEndDateChange (e) {
+      this.endDate = e.mp.detail.value
     },
     handleChange (e) {
       if (typeof e === 'number') {
@@ -490,7 +507,7 @@ export default {
 }
 .protect-content-swiper {
   width: 100%;
-  height: 300rpx;
+  height: 400rpx;
 }
 .content-swipe-item {
   width: 100%;
