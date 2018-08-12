@@ -46,7 +46,6 @@ export default {
   computed: {
     _price: {
       get () {
-        console.log((this.price / 100).toFixed(2))
         return (this.price / 100).toFixed(2)
       },
       set (val) {

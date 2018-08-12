@@ -1,10 +1,10 @@
 <template>
-  <view @click="goOrder(branch.hotelId)" class="fm-shop-panel" hover-class="active">
-    <view class="fm-shop-panel__bd">
+  <view class="fm-shop-panel" hover-class="active">
+    <view class="fm-shop-panel__bd" @tap="goOrder(branch.hotelId)" >
       <view class="fm-shop-panel-title">{{ branch.name }}</view>
       <view class="fm-shop-panel-desc">{{ branch.address }}</view>
     </view>
-    <view class="fm-shop-panel__ft">
+    <view class="fm-shop-panel__ft" @tap="openLocation(branch)">
       <fm-icon icon="icon-map-marker-radius" color="#3ac939" size="24px"></fm-icon>
       <view>{{ _distance }}</view>
     </view>
@@ -24,19 +24,21 @@ export default {
   computed: {
     _distance () {
       const distance = this.branch.distance
-      if (distance < 0) {
-        return '未知'
-      } else if (distance < 1000) {
-        return `${distance.toFixed(2)} m`
-      } else {
-        return `${(distance / 1000).toFixed(2)} km`
-      }
+      return `${distance.toFixed(2)} km`
     }
   },
   methods: {
     goOrder (branchId) {
       this.$wxp.reLaunch({
         url: `/pages/hotel/main?hotelId=${branchId}`
+      })
+    },
+    openLocation (branch) {
+      this.$wxp.openLocation({
+        latitude: parseFloat(branch.lat),
+        longitude: parseFloat(branch.lng),
+        name: branch.name,
+        address: branch.address
       })
     }
   }

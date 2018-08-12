@@ -14,12 +14,12 @@
           <view class="fm-order-cell__ft">
             <view>
               <view>其他</view>
-              <view>门店</view>
+              <view>酒店</view>
             </view>
             <fm-icon icon="icon-chevron-right" color="inherit" size="16px"></fm-icon>
           </view>
         </view>
-        <view class="fm-order-panel__bd__desc">门店地址: {{ hotel.address }}</view>
+        <view class="fm-order-panel__bd__desc">酒店地址: {{ hotel.address }}</view>
       </view>
     </view>
 

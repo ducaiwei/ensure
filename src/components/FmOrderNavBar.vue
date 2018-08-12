@@ -69,7 +69,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import "../asset/style/_variable.less";
 @--navbar-transition: all .2s cubic-bezier(.645,.045,.355,1);
 

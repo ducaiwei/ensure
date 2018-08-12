@@ -18,7 +18,7 @@
                 ({{item.hallAreaDesc}})
               </text>
             </view>
-            <text class="block-text price">{{item.insurancePrice}}￥</text>
+            <text class="block-text price">{{item.insurancePrice / 100}}￥</text>
           </view>
         </view>
         <view class="item-card protect-content-box">
@@ -113,11 +113,11 @@
         </view>
       </form>
     </view>
-    <view class="fm-order-cart__tips">
+    <view class="fm-order-cart__tips" v-if="orderAmount">
       <label>已优惠{{orderAmount.promotionAmount / 100}}元 </label>
     </view>
     <view class="fm-checkout-navbar-fixed">
-      <text class="total-price">&nbsp;&nbsp;&nbsp;&nbsp;{{orderAmount.payAmount / 100}}￥</text>
+      <text class="total-price" v-if="orderAmount">&nbsp;&nbsp;&nbsp;&nbsp;{{orderAmount.payAmount / 100}}￥</text>
       <fm-button @tap="handlePay" size="xl" type="primary" text="微信支付">
       </fm-button>
     </view>
@@ -204,7 +204,7 @@ export default {
   },
   methods: {
     ...mapActions(['getContentAction', 'getExtraInsuresAction', 
-    'queryOrderAmountAction', 'createOrderAction', 'deleteOrderAction']),
+    'queryOrderAmountAction', 'createOrderAction', 'deleteOrderAction', 'setSelectedItemsAction']),
     bindDateChange (e) {
       this.startDate = e.mp.detail.value
     },
@@ -255,6 +255,15 @@ export default {
         })
         return flag
       }
+      const startTime = new Date(this.startDate.replace('-', '/')).getTime()
+      const endTime = new Date(this.endDate.replace('-', '/')).getTime()
+      if (startTime >= endTime) {
+        this.$wxp.showToast({
+          title: '开始时间应小于结束时间',
+          icon: 'none'
+        })
+        return flag
+      }
       return true
     }, 
     handlePay () {
@@ -284,6 +293,7 @@ export default {
               signType: res.result.signType,
               paySign: res.result.paySign
             }).then(re => {
+              this.setSelectedItemsAction([])
               this.$wxp.navigateTo({
                 url: `/pages/trade/main?tradeId=${res.result.oid}`
               })

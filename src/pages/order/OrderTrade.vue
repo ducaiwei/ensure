@@ -1,18 +1,8 @@
 <template>
   <scroll-view scroll-y scroll-with-animation enable-back-to-top class="fm-order-trade">
-
-    <!-- 状态筛选picker，start -->
-    <!-- <fm-picker @change="handlePickerChange(pickerSelected)" v-model="pickerSelected" :range="pickerOptions" range-key="label">
-      <fm-button mode="fab" type="primary" size="m" icon="icon-filter-variant"></fm-button>
-    </fm-picker> -->
-    <!-- 状态筛选picker，end -->
-
     <!-- 订单列表，start -->
     <order-trade-group :list="orders" v-if="orders.length > 0"></order-trade-group>
-
     <fm-empty v-if="orders.length <= 0" text="暂无订单，快下一单试试吧"></fm-empty>
-
-    <!-- <fm-copyright></fm-copyright> -->
     <!-- 订单列表，end -->
   </scroll-view>
 </template>

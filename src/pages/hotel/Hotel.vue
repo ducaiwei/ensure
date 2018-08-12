@@ -1,8 +1,8 @@
 <template>
 <view class="container">
   <view class="index" style="position: absolute; top: 0;width: 100%;overflow:scroll">
-    <view class="index-left" style="">
-      <scroll-view class="left-scroll" scroll-with-animation="false" scroll-y  @scroll="leftScroll" :scroll-top="leftToTop" style="height: 100vh">
+    <view class="left-scroll-box">
+      <scroll-view class="left-scroll" scroll-with-animation="false" scroll-y  @scroll="leftScroll" :scroll-top="leftToTop">
         <view v-for="(item, index) in hotelHalls" :key="index" @tap="jumpToSick" :data-id="'f' + item.hallFloorType" 
         :style="{'background-color':('f' + item.hallFloorType === currentLeftSelect ? '#fff' : '')}" class="index-left-text">
           <view class="store-text" :id="'f' + item.hallFloorType">
@@ -11,7 +11,7 @@
         </view>
       </scroll-view>
     </view>
-    <view class="index-right">
+    <view class="right-scroll-box">
       <scroll-view class="right-scroll" scroll-with-animation="false" scroll-y  @scroll="rightScroll" :scroll-into-view="toView" @scrolltolower="lower">
           <view v-for="(item, index1) in hotelHalls" :key="index1" :id="'f' + item.hallFloorType">
             <view class="index-right-text-top">{{item.hallFloorType}}楼</view>
@@ -20,12 +20,11 @@
       </scroll-view>
     </view>
   </view>
-  <order-cart :cart="carts" :prices="prices" @addQuantity="addQuantity"></order-cart>
+  <order-cart :cart="selectedItems" :prices="prices" @addQuantity="addQuantity"></order-cart>
 </view>
 </template>
 
 <script>
-import FmNavMenu from '@/components/FmNavMenu'
 import FmEmpty from '@/components/FmEmpty'
 import HotelGoods from './HotelGoods'
 import OrderCart from '../order/OrderCart'
@@ -40,7 +39,6 @@ export default {
     }
   },
   components: {
-    FmNavMenu,
     FmEmpty,
     HotelGoods,
     OrderCart,
@@ -55,11 +53,12 @@ export default {
       leftToTop: 0,
       carts: [],
       prices: {},
-      selectedHallIds: []
+      selectedHallIds: [],
+      canScroll: true
     }
   },
   computed: {
-    ...mapState(['userToken', 'hotels'])
+    ...mapState(['userToken', 'hotels' , 'selectedItems'])
   },
   methods: {
     ...mapActions(['getHallsPriceAction', 'setSelectedItemsAction', 'setSeletedIdsAction']),
@@ -76,14 +75,20 @@ export default {
       this.eachRightItemToTop = obj
     },
     rightScroll (e) {   // 监听右侧的滚动事件与 eachRightItemToTop 的循环作对比 从而判断当前可视区域为第几类，从而渲染左侧的对应类。
+      if (!this.canScroll) {
+        return
+      }
+      this.canScroll = false
+      this.toView = null
       const LEFT_ITEM_HEIGHT = 50
       for (let i = 0; i < this.hotelHalls.length; i++) {
         let left = this.eachRightItemToTop['f' + this.hotelHalls[i].hallFloorType]
         let right = this.eachRightItemToTop[this.hotelHalls[i + 1] ? 'f' + this.hotelHalls[i+1].hallFloorType : 'last']
-        if (e.mp.detail.scrollTop < right && e.mp.detail.scrollTop >= left) {
-          this.currentLeftSelect = 'f' + this.hotelHalls[i].hallFloorType
-          this.leftToTop = LEFT_ITEM_HEIGHT * i
-        }
+          if (e.mp.detail.scrollTop < right && e.mp.detail.scrollTop >= left) {
+            this.currentLeftSelect = 'f' + this.hotelHalls[i].hallFloorType
+            this.leftToTop = LEFT_ITEM_HEIGHT * i
+            this.canScroll = true
+          }
       }
     },
     jumpToSick (e) {    // 左侧类的点击事件
@@ -91,10 +96,12 @@ export default {
       this.currentLeftSelect = e.target.id || e.target.dataset.id
     },
     lower: function (e) {
-      const LEFT_ITEM_HEIGHT = 30
-      const l =  this.hotelHalls.length
-      this.currentLeftSelect = 'f' + this.hotelHalls[l - 1].hallFloorType
-      this.leftToTop = LEFT_ITEM_HEIGHT * (l - 1)
+      setTimeout(() => {
+        const LEFT_ITEM_HEIGHT = 50
+        const l =  this.hotelHalls.length
+        this.currentLeftSelect = 'f' + this.hotelHalls[l - 1].hallFloorType
+        this.leftToTop = LEFT_ITEM_HEIGHT * (l - 1)
+      }, 200)
     },
     addQuantity (item, type) {
       if (type === 'plus') {
@@ -113,9 +120,9 @@ export default {
               break
             }
           }
-          this.carts = this.carts.splice(index, 1)
+          this.carts.splice(index, 1)
           let idx = this.selectedHallIds.indexOf(item.id)
-          this.selectedHallIds = this.selectedHallIds.splice(idx, 1)
+          this.selectedHallIds.splice(idx, 1)
         }
       }
       this.setSelectedItemsAction(this.carts)
@@ -138,8 +145,12 @@ export default {
 
 <style lang="less">
 @import "../../asset/style/_variable.less";
-.right-scroll, .left-scroll {
+.left-scroll-box, .right-scroll-box {
   height: calc(~"100vh - 124px - 48px");
+  overflow: hidden;
+}
+.left-scroll, .right-scroll {
+  height: 100%;
 }
 .container {
   position: relative;
@@ -162,13 +173,12 @@ export default {
   height: 200px;
 }
 
-.index-left {
-  height: 100vh;
+.left-scroll-box {
   flex: 1;
   background: #f5f7f9;
 }
 
-.index-right {
+.right-scroll-box {
   flex: 3;
 }
 

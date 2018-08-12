@@ -47,6 +47,7 @@
 import FmButton from '@/components/FmButton'
 import CloseImg from '../../asset/images/close.png'
 import FmIcon from '@/components/FmIcon'
+
 export default {
   name: 'OrderCart',
   components: {
@@ -69,6 +70,7 @@ export default {
     }
   },
   computed: {
+
     totalPrice () {
       return this.prices.payAmount
     },
@@ -78,6 +80,14 @@ export default {
   },
   methods: {
     goCheckout () {
+      if (this.cart.length <= 0) {
+        this.$wxp.showToast({
+          title: '请先选择宴会厅',
+          icon: 'none',
+          duration: 3000
+        })
+        return 
+      }
       this.$wxp.navigateTo({
         url: '/pages/checkout/main'
       })

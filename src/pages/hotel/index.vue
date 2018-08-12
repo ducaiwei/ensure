@@ -49,7 +49,7 @@ export default {
   },
   mixins: [getDetailMixin],
   methods: {
-    ...mapActions(['getHotelDetailAction']),
+    ...mapActions(['getHotelDetailAction','setSelectedItemsAction']),
     doRefresh () {
       setTimeout(() => {
         this.$wxp.stopPullDownRefresh()
@@ -64,6 +64,7 @@ export default {
   },
   mounted () {
     if(this.$mp.query.hotelId) {
+      this.setSelectedItemsAction([])
       this.getDetail(this.$mp.query.hotelId, 'detail')
     }
   }

@@ -23,6 +23,12 @@
             <label class="sku-label">[{{ trade.insuranceCode }}]</label>
           </view>
         </view>
+        <view class="fm-order-trade-order">
+          <view class="name">
+            <label>订单日期</label>
+            <label class="sku-label">[{{ trade.createTime }}]</label>
+          </view>
+        </view>
       </view>
       <view class="fm-order-trade-ft">
         <view></view>
@@ -54,7 +60,6 @@ export default {
     }
   },
   created () {
-    console.log(this.list)
   }
 }
 </script>
